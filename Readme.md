@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Марков](https://up.htmlacademy.ru/javascript/11/user/360247).
-* Наставник: [Иван Чернышов](https://htmlacademy.ru/profile/id77233).
+* Наставник: [Иван Чернышев](https://htmlacademy.ru/profile/id77233).
 
 ---
 
