@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Марков](https://up.htmlacademy.ru/javascript/11/user/360247).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Исаев](https://htmlacademy.ru/profile/id587829).
 
 ---
 
