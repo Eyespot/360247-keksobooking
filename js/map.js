@@ -48,10 +48,11 @@ var getFeatures = function () {
   var allFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var size = getRandomInteger(1, 6);
   var features = [];
-  var j = getRandomInteger(0, 5);
+  var j = getRandomInteger(0, size - 1);
   for (var i = 0; i < size; i++) {
     features[i] = allFeatures[j];
     allFeatures.splice(j, 1);
+    j = getRandomInteger(0, allFeatures.length - 1);
   }
   return features;
 };
