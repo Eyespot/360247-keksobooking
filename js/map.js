@@ -37,20 +37,11 @@ var getSimilarTickets = function () {
       return time;
     };
 
-    // var allFeatures;
-    //
-    // var renewAllFeatures = function () {
-    //   allFeatures = givenFeatures;
-    //   return allFeatures;
-    // };
-    //
-    // renewAllFeatures();
-
     var getFeatures = function () {
       var size = getRandomInteger(1, 6);
       var features = [];
       var j = getRandomInteger(0, size - 1);
-      var allFeatures = givenFeatures.slice(0, 5);
+      var allFeatures = givenFeatures.slice(0, 6);
       for (var i = 0; i < size; i++) {
         features[i] = allFeatures[j];
         allFeatures.splice(j, 1);
@@ -145,7 +136,7 @@ var insertFirstTicket = function () {
     similarTickets[0].offer.type = 'Бунгало';
   }
   ticket.querySelector('h4').textContent = similarTickets[0].offer.type;
-  ticket.children[6].textContent = similarTickets[0].offer.rooms + ' для ' + similarTickets[0].offer.guests + ' гостей';
+  ticket.children[6].textContent = similarTickets[0].offer.rooms + ' комн. для ' + similarTickets[0].offer.guests + ' гостей';
   ticket.children[7].textContent = 'Заезд после ' + similarTickets[0].offer.checkin + ', выезд до ' + similarTickets[0].offer.checkout;
   var featuresList = ticket.querySelectorAll('.feature');
   var featuresListConteiner = ticket.querySelector('.popup__features');
@@ -168,6 +159,5 @@ getSimilarTickets();
 removeMapFading();
 insertingMapPins();
 insertFirstTicket();
-console.log(ticketTemplate);
-console.log(similarTickets);
-console.log(givenFeatures);
+// console.log(ticketTemplate);
+// console.log(similarTickets);
