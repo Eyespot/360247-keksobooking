@@ -5,40 +5,48 @@ var avatars = [1, 2, 3, 4, 5, 6, 7, 8];
 var titles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var times = ['12:00', '13:00', '14:00'];
 var givenFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var map = document.querySelector('.map');
+var ticketTemplate = document.querySelector('template').content.querySelector('article.map__card');
+var mapPinsContainer = document.querySelector('.map__pins');
+var mapPinsFragment = document.createDocumentFragment();
 var similarTickets = [];
 
 function getRandomInteger(min, max) {
   var random = min + Math.random() * (max + 1 - min);
   random = Math.floor(random);
+
   return random;
 }
 
-var getSimilarTickets = function () {
+function getSimilarTickets() {
 
-  var getTicket = function () {
+  function getTicket() {
 
-    var getRandomAvatar = function () {
+    function getRandomAvatar() {
       var i = getRandomInteger(0, avatars.length - 1);
       var avatar = avatars[i];
       avatars.splice(i, 1);
-      return avatar;
-    };
 
-    var getRandomTitle = function () {
+      return avatar;
+    }
+
+    function getRandomTitle() {
       var i = getRandomInteger(0, titles.length - 1);
       var title = titles[i];
       titles.splice(i, 1);
-      return title;
-    };
 
-    var getRandomTime = function () {
+      return title;
+    }
+
+    function getRandomTime() {
       var i = getRandomInteger(0, times.length - 1);
       var time = times[i];
-      return time;
-    };
 
-    var getFeatures = function () {
-      var size = getRandomInteger(1, 6);
+      return time;
+    }
+
+    function getFeatures() {
+      var size = getRandomInteger(1, givenFeatures.length);
       var features = [];
       var j = getRandomInteger(0, size - 1);
       var allFeatures = givenFeatures.slice(0, 6);
@@ -47,21 +55,24 @@ var getSimilarTickets = function () {
         allFeatures.splice(j, 1);
         j = getRandomInteger(0, allFeatures.length - 1);
       }
-      return features;
-    };
 
-    var getHousingType = function () {
-      var type;
-      if (offerTitle === 'Большая уютная квартира' || offerTitle === 'Маленькая неуютная квартира') {
-        type = 'flat';
-        return type;
-      } else if (offerTitle === 'Огромный прекрасный дворец' || offerTitle === 'Маленький ужасный дворец' || offerTitle === 'Красивый гостевой домик' || offerTitle === 'Некрасивый негостеприимный домик') {
-        type = 'house';
-        return type;
-      }
-      type = 'bungalo';
-      return type;
-    };
+      return features;
+    }
+
+    function getHousingType() {
+      var type = {
+        'Большая уютная квартира': 'flat',
+        'Маленькая неуютная квартира': 'flat',
+        'Огромный прекрасный дворец': 'house',
+        'Маленький ужасный дворец': 'house',
+        'Красивый гостевой домик': 'house',
+        'Некрасивый негостеприимный домик': 'house',
+        'Уютное бунгало далеко от моря': 'bungalo',
+        'Неуютное бунгало по колено в воде': 'bungalo'
+      };
+
+      return type[offerTitle];
+    }
 
     var offerTitle = getRandomTitle();
     var offerType = getHousingType();
@@ -90,19 +101,18 @@ var getSimilarTickets = function () {
         'y': locationY
       }
     };
+
     return ticket;
-  };
+  }
 
   for (var i = 0; i < 8; i++) {
     similarTickets[i] = getTicket();
   }
+
   return similarTickets;
-};
+}
 
-var mapPinsContainer = document.querySelector('.map__pins');
-var mapPinsFragment = document.createDocumentFragment();
-
-var insertingMapPins = function () {
+function insertingMapPins() {
   for (var i = 0; i < 7; i++) {
     var newPin = document.createElement('button');
     newPin.style = 'left: ' + (similarTickets[i].location.x - 23) + 'px; top: ' + (similarTickets[i].location.y - 64) + 'px;';
@@ -113,51 +123,43 @@ var insertingMapPins = function () {
   }
 
   mapPinsContainer.appendChild(mapPinsFragment);
-};
+}
 
-var map = document.querySelector('.map');
-
-var removeMapFading = function () {
+function removeMapFading() {
   map.classList.remove('map--faded');
-};
+}
 
-var ticketTemplate = document.querySelector('template').content.querySelector('article.map__card');
-
-var insertFirstTicket = function () {
+function insertFirstTicket() {
   var ticket = ticketTemplate.cloneNode(true);
   ticket.querySelector('h3').textContent = similarTickets[0].offer.title;
   ticket.querySelector('small').textContent = similarTickets[0].offer.address;
   ticket.querySelector('.popup__price').textContent = similarTickets[0].offer.price + ' \u20BD/ночь';
-  if (similarTickets[0].offer.type === 'flat') {
-    similarTickets[0].offer.type = 'Квартира';
-  } else if (similarTickets[0].offer.type === 'house') {
-    similarTickets[0].offer.type = 'Дом';
-  } else {
-    similarTickets[0].offer.type = 'Бунгало';
+  function convertHousingTypeInRussian() {
+    var type = {
+      'flat': 'Квартира',
+      'house': 'Дом',
+      'bungalo': 'Бунгало'
+    };
+
+    return type[similarTickets[0].offer.type];
   }
-  ticket.querySelector('h4').textContent = similarTickets[0].offer.type;
+  ticket.querySelector('h4').textContent = convertHousingTypeInRussian();
   ticket.children[6].textContent = similarTickets[0].offer.rooms + ' комн. для ' + similarTickets[0].offer.guests + ' гостей';
   ticket.children[7].textContent = 'Заезд после ' + similarTickets[0].offer.checkin + ', выезд до ' + similarTickets[0].offer.checkout;
   var featuresList = ticket.querySelectorAll('.feature');
   var featuresListConteiner = ticket.querySelector('.popup__features');
-  for (var i = featuresList.length - 1; i >= 0; i--) {
-    var child = featuresList[i];
-    featuresListConteiner.removeChild(child);
-  }
-  // var featuresListFragment = document.createDocumentFragment();
-  for (var j = 0; j <= similarTickets[0].offer.features.length - 1; j++) {
-    var newFeature = document.createElement('li');
-    newFeature.classList = 'feature feature--' + similarTickets[0].offer.features[j];
-    featuresListConteiner.appendChild(newFeature);
+  for (var i = 0; i < givenFeatures.length; i++) {
+    if (similarTickets[0].offer.features.indexOf(givenFeatures[i]) === -1) {
+      featuresListConteiner.removeChild(featuresList[i]);
+    }
   }
   ticket.children[9].textContent = similarTickets[0].offer.description;
   ticket.querySelector('.popup__avatar').src = similarTickets[0].author.avatar;
+
   map.appendChild(ticket);
-};
+}
 
 getSimilarTickets();
 removeMapFading();
 insertingMapPins();
 insertFirstTicket();
-// console.log(ticketTemplate);
-// console.log(similarTickets);
