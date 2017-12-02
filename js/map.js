@@ -200,13 +200,15 @@ function openTicket(evt) {
   var clickedButtonIndex;
   target = (evt.target.classList.contains('map__pin')) ? evt.target : evt.target.parentNode;
   document.addEventListener('keydown', onPopupEscPress);
-  for (var i = 1; i < ticketPopups.length; i++) {
+  for (var i = 0; i < ticketPopups.length; i++) {
     ticketPopups[i].classList.add('hidden');
-    mapPins[i].classList.remove('map__pin--active');
   }
-  for (var j = 1; j < mapPins.length; j++) {
-    if (target === mapPins[j]) {
-      clickedButtonIndex = j;
+  for (var j = 0; j < mapPins.length; j++) {
+    mapPins[j].classList.remove('map__pin--active');
+  }
+  for (var k = 1; k < mapPins.length; k++) {
+    if (target === mapPins[k]) {
+      clickedButtonIndex = k;
       ticketPopups[clickedButtonIndex - 1].classList.remove('hidden');
       mapPins[clickedButtonIndex].classList.add('map__pin--active');
       return clickedButtonIndex;
@@ -216,9 +218,11 @@ function openTicket(evt) {
 }
 
 function closeTicket() {
-  for (var i = 0; i < ticketPopups.length; i++) {
-    ticketPopups[i].classList.add('hidden');
+  for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].classList.remove('map__pin--active');
+  }
+  for (var j = 0; j < ticketPopups.length; j++) {
+    ticketPopups[j].classList.add('hidden');
   }
   document.removeEventListener('keydown', onPopupEscPress);
 }
