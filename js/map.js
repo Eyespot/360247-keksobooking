@@ -202,10 +202,6 @@ function toggleTicket(evt) {
   for (var j = 0; j < mapPins.length; j++) {
     mapPins[j].classList.remove('map__pin--active');
   }
-  if (evt.target.classList.contains('map__pinsoverlay') || target.classList.contains('map__pin--main')) {
-    document.removeEventListener('keydown', onPopupEscPress);
-    return target;
-  }
   for (var k = 1; k < mapPins.length; k++) {
     if (target === mapPins[k]) {
       clickedButtonIndex = k;
@@ -213,9 +209,11 @@ function toggleTicket(evt) {
       mapPins[clickedButtonIndex].classList.add('map__pin--active');
     }
   }
+  if (target.className !== 'map__pin map__pin--active') {
+    document.removeEventListener('keydown', onPopupEscPress);
+    return;
+  }
   document.addEventListener('keydown', onPopupEscPress);
-
-  return target;
 }
 
 function closeTicket() {
