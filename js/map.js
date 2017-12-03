@@ -195,7 +195,6 @@ function onPopupEscPress(evt) {
 function toggleTicket(evt) {
   var target;
   var clickedButtonIndex;
-  document.addEventListener('keydown', onPopupEscPress);
   target = (evt.target.classList.contains('map__pin')) ? evt.target : evt.target.parentNode;
   for (var i = 0; i < ticketPopups.length; i++) {
     ticketPopups[i].classList.add('hidden');
@@ -212,9 +211,10 @@ function toggleTicket(evt) {
       clickedButtonIndex = k;
       ticketPopups[clickedButtonIndex - 1].classList.remove('hidden');
       mapPins[clickedButtonIndex].classList.add('map__pin--active');
-      return clickedButtonIndex;
     }
   }
+  document.addEventListener('keydown', onPopupEscPress);
+
   return target;
 }
 
