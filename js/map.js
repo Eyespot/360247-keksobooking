@@ -8,6 +8,8 @@ window.map = (function () {
   var userFormDisabledParts = document.querySelectorAll('.notice__form--disabled');
   var userPin = map.querySelector('.map__pin--main');
   var mapPins;
+  // displayMapPins();
+  // var displayMapPins = window.pins.displayMapPins;
 
   userPin.addEventListener('mouseup', onUserPinMouseup);
 

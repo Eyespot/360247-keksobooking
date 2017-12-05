@@ -2,6 +2,7 @@
 
 
 window.dataStack = (function () {
+  var getRandomInteger = window.util.getRandomInteger;
   var avatars = [1, 2, 3, 4, 5, 6, 7, 8];
   var titles = [
     'Большая уютная квартира',
@@ -29,21 +30,21 @@ window.dataStack = (function () {
   var advertismentTickets = [];
 
   function getRandomAvatar() {
-    var i = window.util.getRandomInteger(0, avatars.length - 1);
+    var i = getRandomInteger(0, avatars.length - 1);
     var avatar = avatars.splice(i, 1);
 
     return avatar;
   }
 
   function getRandomTitle() {
-    var i = window.util.getRandomInteger(0, titles.length - 1);
+    var i = getRandomInteger(0, titles.length - 1);
     var title = titles.splice(i, 1);
 
     return title;
   }
 
   function getRandomTime() {
-    var i = window.util.getRandomInteger(0, TIMES.length - 1);
+    var i = getRandomInteger(0, TIMES.length - 1);
     var time = TIMES[i];
 
     return time;
@@ -51,10 +52,10 @@ window.dataStack = (function () {
 
   function getFeatures() {
     var givenFeaturesCopy = GIVEN_FEATURES.slice();
-    var size = window.util.getRandomInteger(0, givenFeaturesCopy.length);
+    var size = getRandomInteger(0, givenFeaturesCopy.length);
     var features = [];
     for (var i = 0; i < size; i++) {
-      var j = window.util.getRandomInteger(0, givenFeaturesCopy.length - 1);
+      var j = getRandomInteger(0, givenFeaturesCopy.length - 1);
       features[i] = givenFeaturesCopy.splice(j, 1).toString();
     }
 
@@ -78,11 +79,11 @@ window.dataStack = (function () {
     var MAX_LOCATION_X = 900;
     var MIN_LOCATION_Y = 100;
     var MAX_LOCATION_Y = 500;
-    var locationX = window.util.getRandomInteger(MIN_LOCATION_X, MAX_LOCATION_X);
-    var locationY = window.util.getRandomInteger(MIN_LOCATION_Y, MAX_LOCATION_Y);
+    var locationX = getRandomInteger(MIN_LOCATION_X, MAX_LOCATION_X);
+    var locationY = getRandomInteger(MIN_LOCATION_Y, MAX_LOCATION_Y);
     var MIN_ROOMS = 1;
     var MAX_ROOMS = 5;
-    var offerRooms = window.util.getRandomInteger(MIN_ROOMS, MAX_ROOMS);
+    var offerRooms = getRandomInteger(MIN_ROOMS, MAX_ROOMS);
     var MIN_PRICE = 1000;
     var MAX_PRICE = 1000000;
     var MIN_GUESTS_PER_ROOM = 1;
@@ -94,10 +95,10 @@ window.dataStack = (function () {
       'offer': {
         'title': offerTitle,
         'address': locationX + ', ' + locationY,
-        'price': window.util.getRandomInteger(MIN_PRICE, MAX_PRICE),
+        'price': getRandomInteger(MIN_PRICE, MAX_PRICE),
         'type': offerType,
         'rooms': offerRooms,
-        'guests': offerRooms * window.util.getRandomInteger(MIN_GUESTS_PER_ROOM, MAX_GUESTS_PER_ROOM),
+        'guests': offerRooms * getRandomInteger(MIN_GUESTS_PER_ROOM, MAX_GUESTS_PER_ROOM),
         'checkin': getRandomTime(),
         'checkout': getRandomTime(),
         'features': getFeatures(),
@@ -113,16 +114,16 @@ window.dataStack = (function () {
     return ticket;
   }
 
-  (function () {
+  function getAdvertismentTickets() {
     var TICKETS_QUANTITY = 8;
     for (var i = 0; i < TICKETS_QUANTITY; i++) {
       advertismentTickets[i] = getTicket();
     }
     return advertismentTickets;
-  })();
+  }
 
   return {
-    advertismentTickets: advertismentTickets,
+    advertismentTickets: getAdvertismentTickets(),
     GIVEN_FEATURES: GIVEN_FEATURES
   };
 })();
