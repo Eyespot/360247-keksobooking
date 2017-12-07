@@ -67,6 +67,8 @@ window.map = (function () {
   }
 
   function onUserPinMouseup() {
+    var USER_PIN_START_X = 600;
+    var USER_PIN_START_Y = 375;
     removeMapFading();
     displayMapPins();
     enableUserForm();
@@ -74,9 +76,76 @@ window.map = (function () {
     ticketPopupCloseButtons = map.querySelectorAll('.popup__close');
     mapPins = map.querySelectorAll('.map__pin');
     userPin.removeEventListener('mouseup', onUserPinMouseup);
+    userPin.style.top = USER_PIN_START_Y + 'px';
+    userPin.style.left = USER_PIN_START_X + 'px';
     window.pins.mapPinsContainer.addEventListener('click', toggleTicket);
     for (var i = 0; i < ticketPopups.length; i++) {
       ticketPopupCloseButtons[i].addEventListener('click', closeTicket);
     }
   }
+
+  userPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var MAP_WIDTH = 1200;
+    var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
+    var MIN_LOCATION_Y = 100;
+    var MAX_LOCATION_Y = 500;
+    var MIN_LOCATION_X = 32;//  halfway button width
+    var MAX_LOCATION_X = MAP_WIDTH - MIN_LOCATION_X;
+    var BORDER_BOUNCE = 15;
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+    var address = document.querySelector('input[name="address"]');
+
+    function onMouseMove(moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      if (userPin.offsetTop < MIN_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION) {
+        userPin.style.top = MIN_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION + BORDER_BOUNCE + 'px';
+        onUserPinBorderOut();
+      } else if (userPin.offsetTop > MAX_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION) {
+        userPin.style.top = MAX_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION - BORDER_BOUNCE + 'px';
+        onUserPinBorderOut();
+      }
+      if (userPin.offsetLeft < MIN_LOCATION_X) {
+        userPin.style.left = MIN_LOCATION_X + BORDER_BOUNCE + 'px';
+        onUserPinBorderOut();
+      } else if (userPin.offsetLeft > MAX_LOCATION_X) {
+        userPin.style.left = MAX_LOCATION_X - BORDER_BOUNCE + 'px';
+        onUserPinBorderOut();
+      }
+      userPin.style.top = (userPin.offsetTop - shift.y) + 'px';
+      userPin.style.left = (userPin.offsetLeft - shift.x) + 'px';
+    }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+      address.value = parseInt(userPin.style.left, 10) + ', ' + (parseInt(userPin.style.top, 10) + USER_PIN_TOP_LOCATION_CORRECTION);
+      window.pins.mapPinsContainer.removeEventListener('mousemove', onMouseMove);
+      window.pins.mapPinsContainer.removeEventListener('mouseup', onMouseUp);
+    }
+
+    function onUserPinBorderOut() {
+      address.value = parseInt(userPin.style.left, 10) + ', ' + (parseInt(userPin.style.top, 10) + USER_PIN_TOP_LOCATION_CORRECTION);
+      window.pins.mapPinsContainer.removeEventListener('mousemove', onMouseMove);
+      window.pins.mapPinsContainer.removeEventListener('mouseup', onMouseUp);
+    }
+
+    window.pins.mapPinsContainer.addEventListener('mousemove', onMouseMove);
+    window.pins.mapPinsContainer.addEventListener('mouseup', onMouseUp);
+  });
 })();
