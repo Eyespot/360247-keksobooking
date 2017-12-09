@@ -79,6 +79,9 @@ window.dataStack = (function () {
     var MAX_LOCATION_X = 900;
     var MIN_LOCATION_Y = 100;
     var MAX_LOCATION_Y = 500;
+    var HALFWAY_PSEUDO_WIDTH = 5;
+    var PSEUDO_HEIGHT = 18;
+    var HALFWAY_MAP_PIN_HEIGHT = 22;
     var locationX = getRandomInteger(MIN_LOCATION_X, MAX_LOCATION_X);
     var locationY = getRandomInteger(MIN_LOCATION_Y, MAX_LOCATION_Y);
     var MIN_ROOMS = 1;
@@ -106,8 +109,8 @@ window.dataStack = (function () {
         'photos': []
       },
       'location': {
-        'x': locationX,
-        'y': locationY
+        'x': locationX - (HALFWAY_PSEUDO_WIDTH),
+        'y': locationY - (HALFWAY_MAP_PIN_HEIGHT + PSEUDO_HEIGHT)
       }
     };
 

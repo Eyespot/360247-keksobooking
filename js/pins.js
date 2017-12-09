@@ -8,13 +8,10 @@ window.pins = (function () {
 
   function displayMapPins() {
     var Fragment = document.createDocumentFragment();
-    var IMPOSITION_ERROR = 4;
-    var HALFWAY_MAP_PIN_IMG_HEIGHT = 23;
-    var PSEUDO_BULDGE = 16;
 
     for (var i = 0; i < advertismentTickets.length; i++) {
       var newPin = document.createElement('button');
-      newPin.style = 'left: ' + (advertismentTickets[i].location.x - IMPOSITION_ERROR) + 'px; top: ' + (advertismentTickets[i].location.y - (HALFWAY_MAP_PIN_IMG_HEIGHT + PSEUDO_BULDGE)) + 'px;';
+      newPin.style = 'left: ' + (advertismentTickets[i].location.x) + 'px; top: ' + (advertismentTickets[i].location.y) + 'px;';
       newPin.className = 'map__pin';
       newPin.innerHTML = '<img src="' + advertismentTickets[i].author.avatar + '" width="40" height="40" draggable="false"></button>';
 
