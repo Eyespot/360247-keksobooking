@@ -9,84 +9,52 @@
   var timeOutSelect = userFormElements[4].querySelector('select[name="timeout"]');
   var housingPriceInput = userFormElements[3].querySelector('input[name="price"]');
   var housingTypeSelect = userFormElements[2].querySelector('select[name="type"]');
+  var TIMES = ['12:00', '13:00', '14:00'];
+  var TYPES = ['bugalo', 'flat', 'house', 'palace'];
+  var PRICES = ['0', '1000', '5000', '10000'];
+  var ROOMS_QUANTITIES = ['1', '2', '3', '100'];
+  var ROOMS_CAPACITY = {
+    '0': [true, true, false, true],
+    '1': [true, false, false, true],
+    '2': [false, false, false, true],
+    '3': [true, true, true, false]
+  };
 
-  timeInSelect.addEventListener('change', onTimeInSelectChange);
-  timeOutSelect.addEventListener('change', onTimeOutSelectChange);
-  housingTypeSelect.addEventListener('change', onHousingTypeSelectChange);
-  roomsQuantitySelect.addEventListener('change', onRoomsQuantitySelectChange);
+  function syncTimes(element, value) {
+    element.value = value;
+  }
 
-
-  function onTimeInSelectChange() {
-    for (var i = 0; i < timeOutSelect.length; i++) {
-      var timeInOption = timeInSelect.options[i];
-      var timeOutOption = timeOutSelect.options[i];
-      if (timeInOption.selected) {
-        timeOutOption.selected = true;
-      }
+  function syncHousingTypeWithMinPrice(element, value) {
+    element.min = value;
+    if (element.value) {
+      element.value = value;
     }
   }
 
-  function onTimeOutSelectChange() {
-    for (var i = 0; i < timeOutSelect.length; i++) {
-      var timeInOption = timeInSelect.options[i];
-      var timeOutOption = timeOutSelect.options[i];
-      if (timeOutOption.selected) {
-        timeInOption.selected = true;
-      }
+  function syncRoomsQuantityWithRoomsCapacity(element, value) {
+    for (var i = 0; i < element.options.length; i++) {
+      element.options[i].disabled = value[i];
     }
+    if (value[3]) {
+      element.options[2].selected = true;
+    }
+    element.options[3].selected = true;
   }
 
-  function onHousingTypeSelectChange() {
-    var type = {
-      'bungalo': 0,
-      'flat': 1000,
-      'house': 5000,
-      'palace': 10000
-    };
-    for (var i = 0; i < housingTypeSelect.length; i++) {
-      var typeOption = housingTypeSelect.options[i];
-      if (typeOption.selected) {
-        housingPriceInput.setAttribute('min', type[typeOption.value]);
-      }
-    }
-  }
 
-  function onRoomsQuantitySelectChange() {
-    for (var i = 0; i < roomsQuantitySelect.length; i++) {
-      var quantity = roomsQuantitySelect.options[i];
-      if (quantity.selected) {
-        quantity = quantity.value;
-      }
-      switch (quantity) {
-        case '1':
-          roomsCapacitySelect.options[0].disabled = true;
-          roomsCapacitySelect.options[1].disabled = true;
-          roomsCapacitySelect.options[2].disabled = false;
-          roomsCapacitySelect.options[3].disabled = true;
-          roomsCapacitySelect.options[2].selected = true;
-          break;
-        case '2':
-          roomsCapacitySelect.options[0].disabled = true;
-          roomsCapacitySelect.options[1].disabled = false;
-          roomsCapacitySelect.options[2].disabled = false;
-          roomsCapacitySelect.options[3].disabled = true;
-          roomsCapacitySelect.options[2].selected = true;
-          break;
-        case '3':
-          roomsCapacitySelect.options[0].disabled = false;
-          roomsCapacitySelect.options[1].disabled = false;
-          roomsCapacitySelect.options[2].disabled = false;
-          roomsCapacitySelect.options[3].disabled = true;
-          roomsCapacitySelect.options[2].selected = true;
-          break;
-        case '100':
-          roomsCapacitySelect.options[0].disabled = true;
-          roomsCapacitySelect.options[1].disabled = true;
-          roomsCapacitySelect.options[2].disabled = true;
-          roomsCapacitySelect.options[3].disabled = false;
-          roomsCapacitySelect.options[3].selected = true;
-          break;
-      }
-    }
-  }
+  timeInSelect.addEventListener('change', function () {
+    window.synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
+  });
+
+  timeOutSelect.addEventListener('change', function () {
+    window.synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
+  });
+
+  housingTypeSelect.addEventListener('change', function () {
+    window.synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+  });
+
+  roomsQuantitySelect.addEventListener('change', function () {
+    window.synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
+  });
 })();
