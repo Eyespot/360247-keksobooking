@@ -19,21 +19,22 @@
     '2': [false, false, false, true],
     '3': [true, true, true, false]
   };
+  var synchronize = window.synchronizeFields.synchronize;
 
   timeInSelect.addEventListener('change', function () {
-    window.synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
+    synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
   });
 
   timeOutSelect.addEventListener('change', function () {
-    window.synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
+    synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
   });
 
   housingTypeSelect.addEventListener('change', function () {
-    window.synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+    synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
   });
 
   roomsQuantitySelect.addEventListener('change', function () {
-    window.synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
+    synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
   });
 
   function syncTimes(element, value) {

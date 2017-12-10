@@ -1,10 +1,14 @@
 'use strict';
 
 
-(function () {
+window.synchronizeFields = (function () {
 
-  window.synchronize = function (elementA, elementB, valuesA, valuesB, callback) {
+  function synchronize(elementA, elementB, valuesA, valuesB, callback) {
     var valueIndex = valuesA.indexOf(elementA.value);
     callback(elementB, valuesB[valueIndex]);
+  }
+
+  return {
+    synchronize: synchronize
   };
 })();

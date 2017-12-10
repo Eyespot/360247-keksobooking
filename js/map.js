@@ -39,8 +39,8 @@ window.map = (function () {
   }
 
   function closeTicket() {
-    closeTickets();
-    deactivatePins();
+    window.showCard.showTicket.openedTicket.classList.add('hidden');
+    deactivatePin();
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
@@ -51,23 +51,19 @@ window.map = (function () {
     }
   }
 
-  function closeTickets() {
-    for (var i = 0; i < ticketPopups.length; i++) {
-      ticketPopups[i].classList.add('hidden');
-    }
-  }
-
-  function deactivatePins() {
-    for (var i = 0; i < mapPins.length; i++) {
-      mapPins[i].classList.remove('map__pin--active');
-    }
+  function deactivatePin() {
+    window.showCard.showTicket.clickedPin.classList.remove('map__pin--active');
   }
 
   function toggleTicket(evt) {
-    closeTickets();
-    deactivatePins();
+    if (window.showCard.showTicket.clickedPin) {
+      deactivatePin();
+    }
+    if (window.showCard.showTicket.openedTicket) {
+      closeTicket();
+    }
 
-    window.showCard(evt, mapPins, ticketPopups, onPopupEscPress);
+    window.showCard.showTicket(evt, mapPins, ticketPopups, onPopupEscPress);
   }
 
   function onUserPinMouseup() {
