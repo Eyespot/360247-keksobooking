@@ -20,6 +20,22 @@
     '3': [true, true, true, false]
   };
 
+  timeInSelect.addEventListener('change', function () {
+    window.synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
+  });
+
+  timeOutSelect.addEventListener('change', function () {
+    window.synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
+  });
+
+  housingTypeSelect.addEventListener('change', function () {
+    window.synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+  });
+
+  roomsQuantitySelect.addEventListener('change', function () {
+    window.synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
+  });
+
   function syncTimes(element, value) {
     element.value = value;
   }
@@ -41,21 +57,4 @@
       element.options[3].selected = true;
     }
   }
-
-
-  timeInSelect.addEventListener('change', function () {
-    window.synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
-  });
-
-  timeOutSelect.addEventListener('change', function () {
-    window.synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
-  });
-
-  housingTypeSelect.addEventListener('change', function () {
-    window.synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
-  });
-
-  roomsQuantitySelect.addEventListener('change', function () {
-    window.synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
-  });
 })();
