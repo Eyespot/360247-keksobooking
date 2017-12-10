@@ -37,8 +37,9 @@
     }
     if (value[3]) {
       element.options[2].selected = true;
+    } else {
+      element.options[3].selected = true;
     }
-    element.options[3].selected = true;
   }
 
 
