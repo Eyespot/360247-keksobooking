@@ -8,7 +8,5 @@ window.synchronizeFields = (function () {
     callback(elementB, valuesB[valueIndex]);
   }
 
-  return {
-    synchronize: synchronize
-  };
+  return synchronize;
 })();

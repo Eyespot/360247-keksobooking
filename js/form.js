@@ -19,7 +19,7 @@
     '2': [false, false, false, true],
     '3': [true, true, true, false]
   };
-  var synchronize = window.synchronizeFields.synchronize;
+  var synchronize = window.synchronizeFields;
 
   timeInSelect.addEventListener('change', function () {
     synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);

@@ -2,10 +2,10 @@
 
 
 window.showCard = (function () {
+  var clickedButtonIndex;
 
   function showTicket(evt, buttons, cards, keydownListener) {
     var target = (evt.target.classList.contains('map__pin')) ? evt.target : evt.target.parentNode;
-    var clickedButtonIndex;
 
     if (target.className !== 'map__pin') {
       return;
@@ -19,13 +19,20 @@ window.showCard = (function () {
       }
     }
 
-    window.showCard.showTicket.clickedPin = target;
-    window.showCard.showTicket.openedTicket = cards[clickedButtonIndex - 1];
-
     document.addEventListener('keydown', keydownListener);
   }
 
+  function closeTicket(buttons, cards, keydownListener) {
+    if (clickedButtonIndex) {
+      cards[clickedButtonIndex - 1].classList.add('hidden');
+      buttons[clickedButtonIndex].classList.remove('map__pin--active');
+      document.removeEventListener('keydown', keydownListener);
+      clickedButtonIndex = null;
+    }
+  }
+
   return {
-    showTicket: showTicket
+    showTicket: showTicket,
+    closeTicket: closeTicket
   };
 })();

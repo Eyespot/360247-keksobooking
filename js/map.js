@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.map = (function () {
+(function () {
   var map = window.pins.map;
   var ticketPopups;
   var ticketPopupCloseButtons;
@@ -30,18 +30,16 @@ window.map = (function () {
     window.pins.displayMapPins();
   }
 
+  function closeTicket() {
+    window.showCard.closeTicket(mapPins, ticketPopups, onPopupEscPress);
+  }
+
   function onPopupEscPress(evt) {
     window.util.isEscEvent(evt, closeTicket);
   }
 
   function removeMapFading() {
     map.classList.remove('map--faded');
-  }
-
-  function closeTicket() {
-    window.showCard.showTicket.openedTicket.classList.add('hidden');
-    deactivatePin();
-    document.removeEventListener('keydown', onPopupEscPress);
   }
 
   function enableUserForm() {
@@ -51,17 +49,8 @@ window.map = (function () {
     }
   }
 
-  function deactivatePin() {
-    window.showCard.showTicket.clickedPin.classList.remove('map__pin--active');
-  }
-
   function toggleTicket(evt) {
-    if (window.showCard.showTicket.clickedPin) {
-      deactivatePin();
-    }
-    if (window.showCard.showTicket.openedTicket) {
-      closeTicket();
-    }
+    closeTicket();
 
     window.showCard.showTicket(evt, mapPins, ticketPopups, onPopupEscPress);
   }
