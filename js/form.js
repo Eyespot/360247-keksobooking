@@ -2,13 +2,15 @@
 
 
 (function () {
-  var userFormElements = document.querySelectorAll('.form__element');
-  var roomsCapacitySelect = userFormElements[6].querySelector('select[name="capacity"]');
-  var roomsQuantitySelect = userFormElements[5].querySelector('select[name="rooms"]');
-  var timeInSelect = userFormElements[4].querySelector('select[name="timein"]');
-  var timeOutSelect = userFormElements[4].querySelector('select[name="timeout"]');
-  var housingPriceInput = userFormElements[3].querySelector('input[name="price"]');
-  var housingTypeSelect = userFormElements[2].querySelector('select[name="type"]');
+  var userForm = document.querySelector('.notice__form');
+  var userFormFields = userForm.querySelectorAll('.form__element');
+  var roomsCapacitySelect = userFormFields[6].querySelector('select[name="capacity"]');
+  var roomsQuantitySelect = userFormFields[5].querySelector('select[name="rooms"]');
+  var timeInSelect = userFormFields[4].querySelector('select[name="timein"]');
+  var timeOutSelect = userFormFields[4].querySelector('select[name="timeout"]');
+  var housingPriceInput = userFormFields[3].querySelector('input[name="price"]');
+  var housingTypeSelect = userFormFields[2].querySelector('select[name="type"]');
+  var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;
   var TIMES = ['12:00', '13:00', '14:00'];
   var TYPES = ['bugalo', 'flat', 'house', 'palace'];
   var PRICES = ['0', '1000', '5000', '10000'];
@@ -20,6 +22,11 @@
     '3': [true, true, true, false]
   };
   var synchronize = window.synchronizeFields;
+
+  userForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(userForm), onFormSendSuccess, onFormSendError);
+  });
 
   timeInSelect.addEventListener('change', function () {
     synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
@@ -36,6 +43,22 @@
   roomsQuantitySelect.addEventListener('change', function () {
     synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
   });
+
+  function onFormSendSuccess() {
+    userForm.reset();
+    setAddressValue();
+    synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+    userForm.appendChild(window.statusMessages.successMessage());
+  }
+
+  function onFormSendError(error) {
+    document.querySelector('body').appendChild(window.statusMessages.errorMessage('Не удалось разместить объявление. ' + error));
+  }
+
+  function setAddressValue() {
+    var userPinAddress = window.map.getUserPinLocation();
+    window.map.address.value = userPinAddress.x + ', ' + (userPinAddress.y + USER_PIN_TOP_LOCATION_CORRECTION);
+  }
 
   function syncTimes(element, value) {
     element.value = value;
