@@ -9,6 +9,8 @@ window.statusMessages = (function () {
   var title = document.createElement('h2');
   var info = document.createElement('p');
 
+  closeButton.addEventListener('click', closeMessage);
+
   message.appendChild(title);
   message.appendChild(info);
   message.appendChild(closeButton);
@@ -34,9 +36,14 @@ window.statusMessages = (function () {
   closeButton.style.top = '0';
   closeButton.style.opacity = '0.5';
 
-  closeButton.addEventListener('click', function () {
+  function onMessageEscPress(evt) {
+    window.util.isEscEvent(evt, closeMessage);
+  }
+
+  function closeMessage() {
+    document.removeEventListener('keydown', onMessageEscPress);
     message.parentNode.removeChild(message);
-  });
+  }
 
   function createErrorMessage(errorMessage) {
     message.style.top = '50%';
@@ -44,6 +51,7 @@ window.statusMessages = (function () {
     title.style.color = errorColor;
     title.textContent = 'Уууупс ¯\\_(ツ)_/¯';
     info.textContent = errorMessage;
+    document.addEventListener('keydown', onMessageEscPress);
 
     return message;
   }
@@ -54,6 +62,7 @@ window.statusMessages = (function () {
     title.style.color = successColor;
     title.textContent = 'Готово!';
     info.textContent = 'Ваше объявление отправлено на модерацию';
+    document.addEventListener('keydown', onMessageEscPress);
 
     return message;
   }
