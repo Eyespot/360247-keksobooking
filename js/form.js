@@ -51,13 +51,13 @@
     userForm.appendChild(window.statusMessages.successMessage());
   }
 
+  function onFormSendError(error) {
+    document.querySelector('body').appendChild(window.statusMessages.errorMessage('Не удалось разместить объявление. ' + error));
+  }
+
   function setAddressValue() {
     var userPinAddress = window.map.getUserPinLocation();
     window.map.address.value = userPinAddress.x + ', ' + (userPinAddress.y + USER_PIN_TOP_LOCATION_CORRECTION);
-  }
-
-  function onFormSendError(error) {
-    document.querySelector('body').appendChild(window.statusMessages.errorMessage('Не удалось разместить объявление. ' + error));
   }
 
   function syncTimes(element, value) {

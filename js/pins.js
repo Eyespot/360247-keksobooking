@@ -19,7 +19,6 @@ window.createPins = (function () {
     }
 
     return fragment;
-    // mapPinsContainer.appendChild(fragment);
   }
 
   return createMapPins;

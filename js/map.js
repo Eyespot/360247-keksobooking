@@ -49,8 +49,8 @@ window.map = (function () {
     return getRandomDataCopy(TICKETS_QUANTITY, tickets);
   }
 
-  function getRandomDataCopy(size, dat) {
-    var dataCopy = dat.slice();
+  function getRandomDataCopy(size, data) {
+    var dataCopy = data.slice();
     var tickets = [];
 
     for (var i = 0; i < size; i++) {

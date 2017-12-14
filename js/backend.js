@@ -4,7 +4,7 @@
 window.backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
 
-  var request = function (onLoad, onError) {
+  function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
     var httpErrors = {
       400: 'Неверный запрос',
@@ -32,7 +32,7 @@ window.backend = (function () {
     xhr.timeout = 20000;
 
     return xhr;
-  };
+  }
 
   function load(onLoad, onError) {
     var xhr = request(onLoad, onError);
