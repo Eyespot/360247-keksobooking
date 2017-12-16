@@ -34,6 +34,7 @@ window.statusMessages = (function () {
   info.style.fontSize = '20px';
 
   closeButton.style.top = '0';
+  closeButton.style.height = '40px';
   closeButton.style.opacity = '0.5';
 
   function onMessageEscPress(evt) {

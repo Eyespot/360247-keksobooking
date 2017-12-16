@@ -8,10 +8,10 @@ window.map = (function () {
   var ticketPopups;
   var ticketPopupCloseButtons;
   var userFormDisabledParts = document.querySelectorAll('.notice__form--disabled');
+  var mapPinsFiltersContainer = document.querySelector('.map__filters');
   var userPin = map.querySelector('.map__pin--main');
-  var address = document.querySelector('input[name="address"]');
   var mapPins;
-  var mapPinsFragment;
+  var address = document.querySelector('input[name="address"]');
   var MAP_WIDTH = 1200;
   var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
   var MIN_LOCATION_Y = 100 + USER_PIN_TOP_LOCATION_CORRECTION;
@@ -25,9 +25,13 @@ window.map = (function () {
     x: USER_PIN_START_X,
     y: USER_PIN_START_Y
   };
-  var TICKETS_QUANTITY = 5;
+  var SHOWN_TICKETS_QUANTITY = 5;
+  var advertismentTickets;
+  var shownTickets;
+  var shownTicketsIndexes = [];
 
   userPin.addEventListener('mousedown', onUserPinMouseDown);
+  mapPinsFiltersContainer.addEventListener('change', filterPins);
 
   window.backend.load(onDataLoad, onDataLoadError);
 
@@ -37,16 +41,18 @@ window.map = (function () {
   }
 
   function onDataLoad(data) {
-    var advertismentTickets = getTickets(data);
-    mapPinsFragment = window.createPins(advertismentTickets);
+    advertismentTickets = data.slice();
+    window.createPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
+    mapPins = map.querySelectorAll('.map__pin');
     userPin.addEventListener('mousedown', activateMap);
+    shownTickets = getShownTickets(data);
   }
 
-  function getTickets(data) {
+  function getShownTickets(data) {
     var tickets = data;
 
-    return getRandomDataCopy(TICKETS_QUANTITY, tickets);
+    return getRandomDataCopy(SHOWN_TICKETS_QUANTITY, tickets);
   }
 
   function getRandomDataCopy(size, data) {
@@ -81,6 +87,25 @@ window.map = (function () {
     }
   }
 
+  function getShownTicketIndexes() {
+    advertismentTickets.forEach(function (ticket, i) {
+      if (shownTickets.indexOf(ticket) !== -1) {
+        shownTicketsIndexes.push(i);
+      }
+    });
+    return shownTicketsIndexes;
+  }
+
+  function showMapPins() {
+    getShownTicketIndexes();
+    mapPins.forEach(function (mapPin, i) {
+      if (shownTicketsIndexes.indexOf(i - 1) !== -1) {
+        mapPin.classList.remove('hidden');
+      }
+    });
+    console.log(shownTickets);
+  }
+
   function toggleTicket(evt) {
     closeTicket();
 
@@ -89,16 +114,38 @@ window.map = (function () {
 
   function activateMap() {
     removeMapFading();
-    mapPinsContainer.appendChild(mapPinsFragment);
+    showMapPins();
     enableUserForm();
     ticketPopups = map.querySelectorAll('.popup');
     ticketPopupCloseButtons = map.querySelectorAll('.popup__close');
-    mapPins = map.querySelectorAll('.map__pin');
     userPin.removeEventListener('mouseup', activateMap);
     mapPinsContainer.addEventListener('click', toggleTicket);
     for (var i = 0; i < ticketPopups.length; i++) {
       ticketPopupCloseButtons[i].addEventListener('click', closeTicket);
     }
+  }
+
+  function filterPins() {
+    var filteredTickets = window.pinsFilters(advertismentTickets);
+    filteredTickets = getRandomDataCopy(SHOWN_TICKETS_QUANTITY, filteredTickets);
+    var filteredTicketsIndexes = [];
+    console.log(filteredTickets);
+
+    mapPins.forEach(function (mapPin) {
+      mapPin.classList.add('hidden');
+    });
+
+    advertismentTickets.forEach(function (ticket, i) {
+      if (filteredTickets.indexOf(ticket) !== -1) {
+        filteredTicketsIndexes.push(i);
+      }
+    });
+
+    mapPins.forEach(function (mapPin, i) {
+      if (filteredTicketsIndexes.indexOf(i - 1) !== -1) {
+        mapPin.classList.remove('hidden');
+      }
+    });
   }
 
   function onUserPinMouseDown(evt) {
