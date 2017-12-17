@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.createPins = (function () {
+window.pins = (function () {
 
   function createMapPins(advertismentTickets, mapPinsContainer) {
     var fragment = document.createDocumentFragment();
@@ -21,5 +21,16 @@ window.createPins = (function () {
     mapPinsContainer.appendChild(fragment);
   }
 
-  return createMapPins;
+  function showMapPins(arrayOfIndexes, mapPins) {
+    mapPins.forEach(function (mapPin, i) {
+      if (arrayOfIndexes.indexOf(i - 1) !== -1) {
+        mapPin.classList.remove('hidden');
+      }
+    });
+  }
+
+  return {
+    createMapPins: createMapPins,
+    showMapPins: showMapPins
+  };
 })();

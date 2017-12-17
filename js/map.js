@@ -2,7 +2,9 @@
 
 
 window.map = (function () {
-  var getRandomInteger = window.util.getRandomInteger;
+  var randomizeWithGivenSize = window.util.randomizeWithGivenSize;
+  var getIndexesOfEqualElements = window.util.getIndexesOfEqualElements;
+  var showMapPins = window.pins.showMapPins;
   var map = document.querySelector('.map');
   var mapPinsContainer = map.querySelector('.map__pins');
   var ticketPopups;
@@ -26,12 +28,14 @@ window.map = (function () {
     y: USER_PIN_START_Y
   };
   var SHOWN_TICKETS_QUANTITY = 5;
+  var DELAY_TIME = 500;
   var advertismentTickets;
   var shownTickets;
-  var shownTicketsIndexes = [];
 
   userPin.addEventListener('mousedown', onUserPinMouseDown);
-  mapPinsFiltersContainer.addEventListener('change', filterPins);
+  mapPinsFiltersContainer.addEventListener('change', function () {
+    window.util.debounce(filterTickets, DELAY_TIME);
+  });
 
   window.backend.load(onDataLoad, onDataLoadError);
 
@@ -42,7 +46,7 @@ window.map = (function () {
 
   function onDataLoad(data) {
     advertismentTickets = data.slice();
-    window.createPins(advertismentTickets, mapPinsContainer);
+    window.pins.createMapPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
     mapPins = map.querySelectorAll('.map__pin');
     userPin.addEventListener('mousedown', activateMap);
@@ -52,20 +56,7 @@ window.map = (function () {
   function getShownTickets(data) {
     var tickets = data;
 
-    return getRandomDataCopy(SHOWN_TICKETS_QUANTITY, tickets);
-  }
-
-  function getRandomDataCopy(size, data) {
-    var dataCopy = data.slice();
-    var tickets = [];
-
-    for (var i = 0; i < size; i++) {
-      var j = getRandomInteger(0, dataCopy.length - 1);
-      tickets.push(dataCopy[j]);
-      dataCopy.splice(j, 1);
-    }
-
-    return tickets;
+    return randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, tickets);
   }
 
   function closeTicket() {
@@ -87,23 +78,9 @@ window.map = (function () {
     }
   }
 
-  function getShownTicketIndexes() {
-    advertismentTickets.forEach(function (ticket, i) {
-      if (shownTickets.indexOf(ticket) !== -1) {
-        shownTicketsIndexes.push(i);
-      }
-    });
-    return shownTicketsIndexes;
-  }
-
-  function showMapPins() {
-    getShownTicketIndexes();
-    mapPins.forEach(function (mapPin, i) {
-      if (shownTicketsIndexes.indexOf(i - 1) !== -1) {
-        mapPin.classList.remove('hidden');
-      }
-    });
-    console.log(shownTickets);
+  function showPins() {
+    var shownTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, shownTickets);
+    showMapPins(shownTicketsIndexes, mapPins);
   }
 
   function toggleTicket(evt) {
@@ -114,7 +91,7 @@ window.map = (function () {
 
   function activateMap() {
     removeMapFading();
-    showMapPins();
+    showPins();
     enableUserForm();
     ticketPopups = map.querySelectorAll('.popup');
     ticketPopupCloseButtons = map.querySelectorAll('.popup__close');
@@ -125,27 +102,21 @@ window.map = (function () {
     }
   }
 
-  function filterPins() {
-    var filteredTickets = window.pinsFilters(advertismentTickets);
-    filteredTickets = getRandomDataCopy(SHOWN_TICKETS_QUANTITY, filteredTickets);
-    var filteredTicketsIndexes = [];
-    console.log(filteredTickets);
+  function filterTickets() {
+    closeTicket();
+    var filteredTickets = window.cardsFilters(advertismentTickets);
 
-    mapPins.forEach(function (mapPin) {
-      mapPin.classList.add('hidden');
-    });
+    if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
+      filteredTickets = randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets);
+    }
 
-    advertismentTickets.forEach(function (ticket, i) {
-      if (filteredTickets.indexOf(ticket) !== -1) {
-        filteredTicketsIndexes.push(i);
-      }
-    });
+    var filteredTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, filteredTickets);
 
-    mapPins.forEach(function (mapPin, i) {
-      if (filteredTicketsIndexes.indexOf(i - 1) !== -1) {
-        mapPin.classList.remove('hidden');
-      }
-    });
+    for (var i = 1; i < mapPins.length; i++) {
+      mapPins[i].classList.add('hidden');
+    }
+
+    showMapPins(filteredTicketsIndexes, mapPins);
   }
 
   function onUserPinMouseDown(evt) {
