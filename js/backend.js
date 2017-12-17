@@ -7,12 +7,13 @@ window.backend = (function () {
   function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
     var httpErrors = {
-      400: 'Неверный запрос',
-      401: 'Требуется авторизация',
-      404: 'Данные не найдены',
-      418: 'I\'m a teapot',
-      500: 'Ошибка сервера'
+      400: 'Неверный запрос.',
+      401: 'Требуется авторизация.',
+      404: 'Данные не найдены.',
+      418: 'I\'m a teapot.',
+      500: 'Ошибка сервера.'
     };
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
@@ -23,7 +24,7 @@ window.backend = (function () {
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError('Произошла ошибка соединения.');
     });
     xhr.addEventListener('timeout', function () {
       onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');

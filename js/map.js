@@ -2,16 +2,18 @@
 
 
 window.map = (function () {
-  var getRandomInteger = window.util.getRandomInteger;
+  var randomizeWithGivenSize = window.util.randomizeWithGivenSize;
+  var getIndexesOfEqualElements = window.util.getIndexesOfEqualElements;
+  var showMapPins = window.pins.showMapPins;
   var map = document.querySelector('.map');
   var mapPinsContainer = map.querySelector('.map__pins');
   var ticketPopups;
   var ticketPopupCloseButtons;
   var userFormDisabledParts = document.querySelectorAll('.notice__form--disabled');
+  var mapPinsFiltersContainer = document.querySelector('.map__filters');
   var userPin = map.querySelector('.map__pin--main');
-  var address = document.querySelector('input[name="address"]');
   var mapPins;
-  var mapPinsFragment;
+  var address = document.querySelector('input[name="address"]');
   var MAP_WIDTH = 1200;
   var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
   var MIN_LOCATION_Y = 100 + USER_PIN_TOP_LOCATION_CORRECTION;
@@ -25,9 +27,15 @@ window.map = (function () {
     x: USER_PIN_START_X,
     y: USER_PIN_START_Y
   };
-  var TICKETS_QUANTITY = 5;
+  var SHOWN_TICKETS_QUANTITY = 5;
+  var DELAY_TIME = 500;
+  var advertismentTickets;
+  var shownTickets;
 
   userPin.addEventListener('mousedown', onUserPinMouseDown);
+  mapPinsFiltersContainer.addEventListener('change', function () {
+    window.util.debounce(filterTickets, DELAY_TIME);
+  });
 
   window.backend.load(onDataLoad, onDataLoadError);
 
@@ -37,29 +45,18 @@ window.map = (function () {
   }
 
   function onDataLoad(data) {
-    var advertismentTickets = getTickets(data);
-    mapPinsFragment = window.createPins(advertismentTickets);
+    advertismentTickets = data.slice();
+    window.pins.createMapPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
+    mapPins = map.querySelectorAll('.map__pin');
     userPin.addEventListener('mousedown', activateMap);
+    shownTickets = getShownTickets(data);
   }
 
-  function getTickets(data) {
+  function getShownTickets(data) {
     var tickets = data;
 
-    return getRandomDataCopy(TICKETS_QUANTITY, tickets);
-  }
-
-  function getRandomDataCopy(size, data) {
-    var dataCopy = data.slice();
-    var tickets = [];
-
-    for (var i = 0; i < size; i++) {
-      var j = getRandomInteger(0, dataCopy.length - 1);
-      tickets.push(dataCopy[j]);
-      dataCopy.splice(j, 1);
-    }
-
-    return tickets;
+    return randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, tickets);
   }
 
   function closeTicket() {
@@ -81,6 +78,11 @@ window.map = (function () {
     }
   }
 
+  function showPins() {
+    var shownTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, shownTickets);
+    showMapPins(shownTicketsIndexes, mapPins);
+  }
+
   function toggleTicket(evt) {
     closeTicket();
 
@@ -89,16 +91,32 @@ window.map = (function () {
 
   function activateMap() {
     removeMapFading();
-    mapPinsContainer.appendChild(mapPinsFragment);
+    showPins();
     enableUserForm();
     ticketPopups = map.querySelectorAll('.popup');
     ticketPopupCloseButtons = map.querySelectorAll('.popup__close');
-    mapPins = map.querySelectorAll('.map__pin');
     userPin.removeEventListener('mouseup', activateMap);
     mapPinsContainer.addEventListener('click', toggleTicket);
     for (var i = 0; i < ticketPopups.length; i++) {
       ticketPopupCloseButtons[i].addEventListener('click', closeTicket);
     }
+  }
+
+  function filterTickets() {
+    closeTicket();
+    var filteredTickets = window.cardsFilters(advertismentTickets);
+
+    if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
+      filteredTickets = randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets);
+    }
+
+    var filteredTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, filteredTickets);
+
+    for (var i = 1; i < mapPins.length; i++) {
+      mapPins[i].classList.add('hidden');
+    }
+
+    showMapPins(filteredTicketsIndexes, mapPins);
   }
 
   function onUserPinMouseDown(evt) {
