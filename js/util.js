@@ -13,6 +13,7 @@ window.util = (function () {
   }
 
   function isEscEvent(evt, action) {
+
     if (evt.keyCode === ESC_KEYCODE) {
       action();
     }
@@ -33,15 +34,19 @@ window.util = (function () {
 
   function getIndexesOfEqualElements(bigArray, smallArray) {
     var indexes = [];
+
     bigArray.forEach(function (ticket, i) {
+
       if (smallArray.indexOf(ticket) !== -1) {
         indexes.push(i);
       }
     });
+
     return indexes;
   }
 
   function debounce(callback, delayTime) {
+
     if (previousTimeout) {
       window.clearTimeout(previousTimeout);
     }

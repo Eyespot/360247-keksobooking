@@ -23,6 +23,7 @@ window.showCard = (function () {
   }
 
   function closeTicket(buttons, cards, keydownListener) {
+
     if (clickedButtonIndex) {
       cards[clickedButtonIndex - 1].classList.add('hidden');
       buttons[clickedButtonIndex].classList.remove('map__pin--active');

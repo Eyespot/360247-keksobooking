@@ -49,8 +49,10 @@ window.statusMessages = (function () {
   function createErrorMessage(errorMessage) {
     message.style.top = '50%';
     message.style.borderColor = errorColor;
+
     title.style.color = errorColor;
     title.textContent = 'Уууупс ¯\\_(ツ)_/¯';
+
     info.textContent = errorMessage;
     document.addEventListener('keydown', onMessageEscPress);
 
@@ -60,8 +62,10 @@ window.statusMessages = (function () {
   function createSuccessMessage() {
     message.style.top = '50%';
     message.style.borderColor = successColor;
+
     title.style.color = successColor;
     title.textContent = 'Готово!';
+
     info.textContent = 'Ваше объявление отправлено на модерацию';
     document.addEventListener('keydown', onMessageEscPress);
 

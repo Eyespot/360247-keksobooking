@@ -8,14 +8,17 @@ window.cardsFilters = (function () {
   var filterTypes = [filterWithType, filterWithPrice, filterWithRooms, filterWithGuests];
   var priceWeight = {
     low: function (price) {
+
       return price < LOW_PRICE;
     },
 
     middle: function (price) {
+
       return price >= LOW_PRICE && price < MIDDLE_PRICE;
     },
 
     high: function (price) {
+
       return price >= MIDDLE_PRICE;
     }
   };
@@ -23,6 +26,7 @@ window.cardsFilters = (function () {
 
   function filterWithType(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
+
       return ticket.offer.type === value;
     });
 
@@ -31,6 +35,7 @@ window.cardsFilters = (function () {
 
   function filterWithPrice(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
+
       return priceWeight[value](ticket.offer.price);
     });
 
@@ -39,6 +44,7 @@ window.cardsFilters = (function () {
 
   function filterWithRooms(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
+
       return ticket.offer.rooms.toString() === value;
     });
 
@@ -47,6 +53,7 @@ window.cardsFilters = (function () {
 
   function filterWithGuests(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
+
       return ticket.offer.guests.toString() === value;
     });
 
@@ -55,6 +62,7 @@ window.cardsFilters = (function () {
 
   function filterWithFeatures(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
+
       return ticket.offer.features.indexOf(value) !== -1;
     });
 
@@ -66,6 +74,7 @@ window.cardsFilters = (function () {
     elements.forEach(function (filter) {
       outputArray.push(filter.value);
     });
+
     return outputArray;
   }
 
@@ -81,6 +90,7 @@ window.cardsFilters = (function () {
     });
 
     filters.forEach(function (filter, i) {
+
       if (filter !== 'any') {
         filteredTickets = filterTypes[i](filteredTickets, filter);
       }

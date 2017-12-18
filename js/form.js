@@ -46,6 +46,10 @@
 
   function onFormSendSuccess() {
     userForm.reset();
+    window.map.ticketsFiltersContainer.reset();
+    window.map.filterTickets();
+    window.map.userPin.style.top = 375 + 'px';
+    window.map.userPin.style.left = 50 + '%';
     setAddressValue();
     synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
     userForm.appendChild(window.statusMessages.successMessage());
@@ -66,15 +70,18 @@
 
   function syncHousingTypeWithMinPrice(element, value) {
     element.min = value;
+
     if (element.value) {
       element.value = value;
     }
   }
 
   function syncRoomsQuantityWithRoomsCapacity(element, value) {
+
     for (var i = 0; i < element.options.length; i++) {
       element.options[i].disabled = value[i];
     }
+
     if (value[3]) {
       element.options[2].selected = true;
     } else {
