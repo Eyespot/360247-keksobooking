@@ -31,6 +31,8 @@ window.map = (function () {
   var DELAY_TIME = 500;
   var advertismentTickets;
   var shownTickets;
+  var photosLists;
+  var pictures = [];
 
   userPin.addEventListener('mousedown', onUserPinMouseDown);
 
@@ -39,6 +41,10 @@ window.map = (function () {
   });
 
   window.backend.load(onDataLoad, onDataLoadError);
+
+  function togglePictures() {
+    window.showCard.togglePictures(pictures);
+  }
 
   function onDataLoadError(errorMessage) {
     var warning = window.statusMessages.errorMessage(errorMessage);
@@ -49,7 +55,13 @@ window.map = (function () {
     advertismentTickets = data.slice();
     window.pins.createMapPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
+
     mapPins = map.querySelectorAll('.map__pin');
+
+    photosLists = document.querySelectorAll('.popup__pictures');
+    photosLists.forEach(function (list, i) {
+      pictures[i] = (list.querySelectorAll('.popup__picture'));
+    });
 
     userPin.addEventListener('mousedown', activateMap);
     shownTickets = getShownTickets(data);
@@ -62,7 +74,7 @@ window.map = (function () {
   }
 
   function closeTicket() {
-    window.showCard.closeTicket(mapPins, ticketPopups, onPopupEscPress);
+    window.showCard.closeTicket(mapPins, ticketPopups, photosLists, togglePictures, pictures, onPopupEscPress);
   }
 
   function onPopupEscPress(evt) {
@@ -87,7 +99,7 @@ window.map = (function () {
 
   function toggleTicket(evt) {
     closeTicket();
-    window.showCard.showTicket(evt, mapPins, ticketPopups, onPopupEscPress);
+    window.showCard.showTicket(evt, mapPins, ticketPopups, photosLists, togglePictures, onPopupEscPress);
   }
 
   function activateMap() {
@@ -206,6 +218,7 @@ window.map = (function () {
     address: address,
     userPin: userPin,
     ticketsFiltersContainer: ticketsFiltersContainer,
-    filterTickets: filterTickets
+    filterTickets: filterTickets,
+    photosLists: photosLists
   };
 })();
