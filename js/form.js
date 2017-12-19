@@ -10,6 +10,7 @@
   var timeOutSelect = userFormFields[4].querySelector('select[name="timeout"]');
   var housingPriceInput = userFormFields[3].querySelector('input[name="price"]');
   var housingTypeSelect = userFormFields[2].querySelector('select[name="type"]');
+  var titleInput = userFormFields[0].querySelector('input[name="title"]');
   var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;
   var TIMES = ['12:00', '13:00', '14:00'];
   var TYPES = ['bugalo', 'flat', 'house', 'palace'];
@@ -28,6 +29,10 @@
     window.backend.save(new FormData(userForm), onFormSendSuccess, onFormSendError);
   });
 
+  if (window.util.checkBrowser() === 'Edge') {
+    titleInput.addEventListener('change', onEdgeTitleLengthCheck);
+  }
+
   timeInSelect.addEventListener('change', function () {
     synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
   });
@@ -43,6 +48,15 @@
   roomsQuantitySelect.addEventListener('change', function () {
     synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
   });
+
+  function onEdgeTitleLengthCheck() {
+    if (titleInput.value.length < 30) {
+      var guideline = 'Пожалуйста, введите не менее 30 символов. Введено: ' + titleInput.value.length;
+      titleInput.setCustomValidity(guideline);
+    } else {
+      titleInput.setCustomValidity('');
+    }
+  }
 
   function onFormSendSuccess() {
     userForm.reset();
