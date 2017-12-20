@@ -30,6 +30,7 @@
   });
 
   if (window.util.checkBrowser() === 'Edge') {
+    userForm.reset();
     titleInput.addEventListener('change', onEdgeTitleLengthCheck);
   }
 
