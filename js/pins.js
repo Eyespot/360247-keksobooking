@@ -11,6 +11,7 @@ window.pins = (function () {
 
     for (var i = 0; i < advertismentTickets.length; i++) {
       var newPin = document.createElement('button');
+
       newPin.style = 'left: ' + (advertismentTickets[i].location.x - HALFWAY_PSEUDO_WIDTH) + 'px; top: ' + (advertismentTickets[i].location.y - (HALFWAY_MAP_PIN_HEIGHT + PSEUDO_HEIGHT)) + 'px;';
       newPin.className = 'map__pin hidden';
       newPin.innerHTML = '<img src="' + advertismentTickets[i].author.avatar + '" width="40" height="40" draggable="false"></button>';
@@ -22,7 +23,9 @@ window.pins = (function () {
   }
 
   function showMapPins(arrayOfIndexes, mapPins) {
+
     mapPins.forEach(function (mapPin, i) {
+
       if (arrayOfIndexes.indexOf(i - 1) !== -1) {
         mapPin.classList.remove('hidden');
       }

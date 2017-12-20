@@ -17,15 +17,19 @@ window.backend = (function () {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
+
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
         onError(httpErrors[xhr.status]);
       }
+
     });
+
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения.');
     });
+
     xhr.addEventListener('timeout', function () {
       onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');
     });

@@ -13,6 +13,7 @@ window.util = (function () {
   }
 
   function isEscEvent(evt, action) {
+
     if (evt.keyCode === ESC_KEYCODE) {
       action();
     }
@@ -33,19 +34,45 @@ window.util = (function () {
 
   function getIndexesOfEqualElements(bigArray, smallArray) {
     var indexes = [];
+
     bigArray.forEach(function (ticket, i) {
+
       if (smallArray.indexOf(ticket) !== -1) {
         indexes.push(i);
       }
     });
+
     return indexes;
   }
 
   function debounce(callback, delayTime) {
+
     if (previousTimeout) {
       window.clearTimeout(previousTimeout);
     }
     previousTimeout = window.setTimeout(callback, delayTime);
+  }
+
+  function checkBrowser() {
+    var ua = navigator.userAgent;
+
+    if (ua.search(/Chrome/) > 0) {
+      return 'Google Chrome';
+    }
+
+    if (ua.search(/Firefox/) > 0) {
+      return 'Firefox';
+    }
+
+    if (ua.search(/Safari/) > 0) {
+      return 'Safari';
+    }
+
+    if (ua.search(/Edge/) > 0) {
+      return 'Edge';
+    }
+
+    return 'Не определен';
   }
 
   return {
@@ -53,6 +80,7 @@ window.util = (function () {
     isEscEvent: isEscEvent,
     randomizeWithGivenSize: randomizeWithGivenSize,
     getIndexesOfEqualElements: getIndexesOfEqualElements,
-    debounce: debounce
+    debounce: debounce,
+    checkBrowser: checkBrowser
   };
 })();
