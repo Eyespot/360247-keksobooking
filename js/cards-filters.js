@@ -4,7 +4,7 @@
 window.cardsFilters = (function () {
   var LOW_PRICE = 10000;
   var MIDDLE_PRICE = 50000;
-  var ticketFilters = document.querySelectorAll('.map__filter');
+  var ticketFilters = Array.from(document.querySelectorAll('.map__filter'));
   var filterTypes = [filterWithType, filterWithPrice, filterWithRooms, filterWithGuests];
   var priceWeight = {
     low: function (price) {
@@ -79,7 +79,7 @@ window.cardsFilters = (function () {
   }
 
   function filterTickets(advertismentTickets) {
-    var checkedPinFeatures = document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked');
+    var checkedPinFeatures = Array.from(document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked'));
     var checkedFeatures = getArrayFromElementsValue(checkedPinFeatures);
     var filters = getArrayFromElementsValue(ticketFilters);
 

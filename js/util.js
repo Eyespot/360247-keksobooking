@@ -55,6 +55,7 @@ window.util = (function () {
 
   function checkBrowser() {
     var ua = navigator.userAgent;
+    console.log(ua);
 
     if (ua.search(/Chrome/) > 0) {
       return 'Google Chrome';

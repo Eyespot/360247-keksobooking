@@ -56,9 +56,9 @@ window.map = (function () {
     window.pins.createMapPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
 
-    mapPins = map.querySelectorAll('.map__pin');
+    mapPins = Array.from(map.querySelectorAll('.map__pin'));
 
-    photosLists = document.querySelectorAll('.popup__pictures');
+    photosLists = Array.from(document.querySelectorAll('.popup__pictures'));
     photosLists.forEach(function (list, i) {
       pictures[i] = (list.querySelectorAll('.popup__picture'));
     });
