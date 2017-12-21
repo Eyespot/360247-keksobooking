@@ -67,7 +67,7 @@ window.cards = (function () {
       }
 
       if (card.offer.photos.length === 0) {
-        images[0].classList.add('hidden');
+        photosList.removeChild(photoContainer);
       }
 
       fragment.appendChild(ticket);

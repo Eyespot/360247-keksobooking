@@ -64,6 +64,7 @@ window.map = (function () {
     mapPins = Array.from(map.querySelectorAll('.map__pin'));
 
     photosLists = Array.from(document.querySelectorAll('.popup__pictures'));
+
     photosLists.forEach(function (list, i) {
       pictures[i] = (list.querySelectorAll('.popup__picture'));
     });
