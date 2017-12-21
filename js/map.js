@@ -63,10 +63,6 @@ window.map = (function () {
       pictures[i] = (list.querySelectorAll('.popup__picture'));
     });
 
-    if (window.util.checkBrowser === 'Edge') {
-      window.userForm.reset();
-    }
-
     userPin.addEventListener('mousedown', activateMap);
     shownTickets = getShownTickets(data);
   }
@@ -107,6 +103,11 @@ window.map = (function () {
   }
 
   function activateMap() {
+
+    if (window.util.checkBrowser === 'Edge') {
+      window.userForm.reset();
+    }
+
     removeMapFading();
     showPins();
     enableUserForm();
