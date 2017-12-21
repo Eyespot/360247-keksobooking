@@ -53,7 +53,7 @@ window.map = (function () {
 
   function onDataLoad(data) {
 
-    if (window.util.checkBrowser === 'Edge') {
+    if (window.util.checkBrowser() === 'Edge') {
       window.userForm.reset();
     }
 
