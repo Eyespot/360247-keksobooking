@@ -56,18 +56,6 @@ window.util = (function () {
   function checkBrowser() {
     var ua = navigator.userAgent;
 
-    if (ua.search(/Chrome/) > 0) {
-      return 'Google Chrome';
-    }
-
-    if (ua.search(/Firefox/) > 0) {
-      return 'Firefox';
-    }
-
-    if (ua.search(/Safari/) > 0) {
-      return 'Safari';
-    }
-
     if (ua.search(/Edge/) > 0) {
       return 'Edge';
     }

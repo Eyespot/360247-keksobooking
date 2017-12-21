@@ -1,7 +1,7 @@
 'use strict';
 
 
-(function () {
+window.userForm = (function () {
   var userForm = document.querySelector('.notice__form');
   var userFormFields = userForm.querySelectorAll('.form__element');
   var roomsCapacitySelect = userFormFields[6].querySelector('select[name="capacity"]');
@@ -22,7 +22,7 @@
     '2': [false, false, false, true],
     '3': [true, true, true, false]
   };
-  var synchronize = window.synchronizeFields;
+  var onChangeSynchronize = window.synchronizeFields;
 
   userForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -30,23 +30,24 @@
   });
 
   if (window.util.checkBrowser() === 'Edge') {
+    userForm.reset();
     titleInput.addEventListener('change', onEdgeTitleLengthCheck);
   }
 
   timeInSelect.addEventListener('change', function () {
-    synchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
+    onChangeSynchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
   });
 
   timeOutSelect.addEventListener('change', function () {
-    synchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
+    onChangeSynchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
   });
 
   housingTypeSelect.addEventListener('change', function () {
-    synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+    onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
   });
 
   roomsQuantitySelect.addEventListener('change', function () {
-    synchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
+    onChangeSynchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
   });
 
   function onEdgeTitleLengthCheck() {
@@ -64,8 +65,12 @@
     window.map.filterTickets();
     window.map.userPin.style.top = 375 + 'px';
     window.map.userPin.style.left = 50 + '%';
+
+    window.uploadedPictures();
+
     setAddressValue();
-    synchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+    onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+
     userForm.appendChild(window.statusMessages.successMessage());
   }
 
@@ -102,4 +107,6 @@
       element.options[3].selected = true;
     }
   }
+
+  return userForm;
 })();
