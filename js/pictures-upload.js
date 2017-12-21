@@ -1,7 +1,7 @@
 'use strict';
 
 
-(function () {
+window.uploadedPictures = (function () {
   var FILE_TYPES = ['.gif', '.jpg', '.jpeg', '.png'];
 
   var userAvatarInput = document.querySelector('input[id="avatar"]');
@@ -118,4 +118,16 @@
       reader.readAsDataURL(file);
     }
   }
+
+  function resetPreviews() {
+    userAvatarPreview.src = 'img/muffin.png';
+    userAvatarPreview.width = '40';
+    userAvatarPreview.height = '44';
+
+    while (userPicturesPreviewArea.children.length > 1) {
+      userPicturesPreviewArea.removeChild(userPicturesPreviewArea.lastChild);
+    }
+  }
+
+  return resetPreviews;
 })();

@@ -65,8 +65,12 @@ window.userForm = (function () {
     window.map.filterTickets();
     window.map.userPin.style.top = 375 + 'px';
     window.map.userPin.style.left = 50 + '%';
+
+    window.uploadedPictures();
+
     setAddressValue();
     onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
+
     userForm.appendChild(window.statusMessages.successMessage());
   }
 
