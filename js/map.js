@@ -52,6 +52,11 @@ window.map = (function () {
   }
 
   function onDataLoad(data) {
+
+    if (window.util.checkBrowser === 'Edge') {
+      window.userForm.reset();
+    }
+
     advertismentTickets = data.slice();
     window.pins.createMapPins(advertismentTickets, mapPinsContainer);
     window.cards(advertismentTickets, map);
@@ -103,10 +108,6 @@ window.map = (function () {
   }
 
   function activateMap() {
-
-    if (window.util.checkBrowser === 'Edge') {
-      window.userForm.reset();
-    }
 
     removeMapFading();
     showPins();
