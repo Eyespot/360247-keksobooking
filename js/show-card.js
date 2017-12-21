@@ -20,8 +20,10 @@ window.showCard = (function () {
         clickedButtonIndex = i;
         buttons[clickedButtonIndex].classList.add('map__pin--active');
         cards[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].classList.remove('hidden');
-        photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
 
+        if (photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].children.length !== 0) {
+          photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
+        }
       }
     }
 
@@ -34,9 +36,12 @@ window.showCard = (function () {
       cards[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].classList.add('hidden');
       buttons[clickedButtonIndex].classList.remove('map__pin--active');
       document.removeEventListener('keydown', keydownListener);
-      photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
 
-      resetPictures(pictures);
+      if (photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].children.length !== 0) {
+        photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
+
+        resetPictures(pictures);
+      }
 
       clickedButtonIndex = null;
     }
