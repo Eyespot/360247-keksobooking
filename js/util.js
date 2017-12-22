@@ -4,7 +4,7 @@
 window.util = (function () {
   var previousTimeout = null;
   var ESC_KEYCODE = 27;
-  var INDEX_SYNCHRONIZATION = 1;
+  var INDEX_SYNCHRONIZATION_VALUE = 1;
 
   function getRandomInteger(min, max) {
     var random = min + Math.random() * (max + 1 - min);
@@ -71,6 +71,6 @@ window.util = (function () {
     getIndexesOfEqualElements: getIndexesOfEqualElements,
     debounce: debounce,
     checkBrowser: checkBrowser,
-    indexSynchronization: INDEX_SYNCHRONIZATION
+    indexSynchronizationValue: INDEX_SYNCHRONIZATION_VALUE
   };
 })();
