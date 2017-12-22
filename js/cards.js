@@ -74,7 +74,9 @@ window.cards = (function () {
       var price = stencil.querySelector('.popup__price');
       var housingType = stencil.querySelector('h4');
       var capacity = stencil.children[6];
+      var capacityContent = card.offer.rooms + ' комн. для ' + card.offer.guests + ' гостей';
       var time = stencil.children[7];
+      var timeContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
       var description = stencil.children[9];
       var avatar = stencil.querySelector('.popup__avatar');
 
@@ -82,8 +84,8 @@ window.cards = (function () {
       address.textContent = card.offer.address;
       price.textContent = card.offer.price + ' \u20BD/ночь';
       housingType.textContent = type[card.offer.type];
-      capacity.textContent = card.offer.rooms + ' комн. для ' + card.offer.guests + ' гостей';
-      time.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
+      capacity.textContent = capacityContent;
+      time.textContent = timeContent;
       description.textContent = card.offer.description;
       avatar.src = card.author.avatar;
       stencil.classList.add('hidden');

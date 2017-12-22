@@ -2,11 +2,13 @@
 
 
 window.showCard = (function () {
-  var clickedIndex;
-  var counter = 0;
-  var INDEX_SYNCHRONIZATION = window.util.indexSynchronization;
+  var INDEX_SYNCHRONIZATION_VALUE = window.util.indexSynchronizationValue;
   var ACTIVATED_PIN_CLASS = 'map__pin--active';
   var PIN_CLASS = 'map__pin';
+
+  var clickedIndex;
+  var synchronizedIndex;
+  var counter = 0;
 
   function showTicket(evt, buttons, cards, photosLists, togglePicture, keydownListener) {
     var target = (evt.target.classList.contains(PIN_CLASS)) ? evt.target : evt.target.parentNode;
@@ -20,11 +22,13 @@ window.showCard = (function () {
 
       if (target === buttons[i]) {
         clickedIndex = i;
-        buttons[clickedIndex].classList.add(ACTIVATED_PIN_CLASS);
-        cards[clickedIndex - INDEX_SYNCHRONIZATION].classList.remove('hidden');
+        synchronizedIndex = clickedIndex - INDEX_SYNCHRONIZATION_VALUE;
 
-        if (photosLists[clickedIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
-          photosLists[clickedIndex - INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
+        buttons[clickedIndex].classList.add(ACTIVATED_PIN_CLASS);
+        cards[synchronizedIndex].classList.remove('hidden');
+
+        if (photosLists[synchronizedIndex].children.length > 0) {
+          photosLists[synchronizedIndex].addEventListener('click', togglePicture);
         }
       }
     }
@@ -35,12 +39,12 @@ window.showCard = (function () {
   function closeTicket(buttons, cards, photosLists, togglePicture, pictures, keydownListener) {
 
     if (clickedIndex) {
-      cards[clickedIndex - INDEX_SYNCHRONIZATION].classList.add('hidden');
+      cards[synchronizedIndex].classList.add('hidden');
       buttons[clickedIndex].classList.remove(ACTIVATED_PIN_CLASS);
       document.removeEventListener('keydown', keydownListener);
 
-      if (photosLists[clickedIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
-        photosLists[clickedIndex - INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
+      if (photosLists[synchronizedIndex].children.length > 0) {
+        photosLists[synchronizedIndex].removeEventListener('click', togglePicture);
 
         resetPictures(pictures);
       }
@@ -49,29 +53,37 @@ window.showCard = (function () {
     }
   }
 
+  function hidePicture(pictures) {
+    pictures[synchronizedIndex][counter].classList.add('hidden');
+  }
+
+  function showPicture(pictures) {
+    pictures[synchronizedIndex][counter].classList.remove('hidden');
+  }
+
   function resetPictures(pictures) {
-    pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.add('hidden');
-
+    hidePicture(pictures);
     counter = 0;
+    showPicture(pictures);
+  }
 
-    pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.remove('hidden');
+  function showNextPicture(pictures) {
+    hidePicture(pictures);
+    counter++;
+    showPicture(pictures);
   }
 
   function togglePictures(pictures) {
 
-    if (pictures[clickedIndex - INDEX_SYNCHRONIZATION].length > 1) {
+    if (pictures[synchronizedIndex].length > 1) {
 
-      if (counter === pictures[clickedIndex - INDEX_SYNCHRONIZATION].length - 1) {
+      if (counter === pictures[synchronizedIndex].length - 1) {
         resetPictures(pictures);
 
         return;
       }
 
-      pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.add('hidden');
-
-      counter++;
-
-      pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.remove('hidden');
+      showNextPicture(pictures);
     }
   }
 
