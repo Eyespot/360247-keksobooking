@@ -2,8 +2,8 @@
 
 
 window.showCard = (function () {
-  var clickedButtonIndex;
-  var currentPicture = 0;
+  var clickedIndex;
+  var counter = 0;
   var INDEX_SYNCHRONIZATION = 1;
   var ACTIVATED_PIN_CLASS = 'map__pin--active';
   var PIN_CLASS = 'map__pin';
@@ -19,12 +19,12 @@ window.showCard = (function () {
     for (var i = 1; i < buttons.length; i++) {
 
       if (target === buttons[i]) {
-        clickedButtonIndex = i;
-        buttons[clickedButtonIndex].classList.add(ACTIVATED_PIN_CLASS);
-        cards[clickedButtonIndex - INDEX_SYNCHRONIZATION].classList.remove('hidden');
+        clickedIndex = i;
+        buttons[clickedIndex].classList.add(ACTIVATED_PIN_CLASS);
+        cards[clickedIndex - INDEX_SYNCHRONIZATION].classList.remove('hidden');
 
-        if (photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
-          photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
+        if (photosLists[clickedIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
+          photosLists[clickedIndex - INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
         }
       }
     }
@@ -34,40 +34,44 @@ window.showCard = (function () {
 
   function closeTicket(buttons, cards, photosLists, togglePicture, pictures, keydownListener) {
 
-    if (clickedButtonIndex) {
-      cards[clickedButtonIndex - INDEX_SYNCHRONIZATION].classList.add('hidden');
-      buttons[clickedButtonIndex].classList.remove(ACTIVATED_PIN_CLASS);
+    if (clickedIndex) {
+      cards[clickedIndex - INDEX_SYNCHRONIZATION].classList.add('hidden');
+      buttons[clickedIndex].classList.remove(ACTIVATED_PIN_CLASS);
       document.removeEventListener('keydown', keydownListener);
 
-      if (photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
-        photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
+      if (photosLists[clickedIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
+        photosLists[clickedIndex - INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
 
         resetPictures(pictures);
       }
 
-      clickedButtonIndex = null;
+      clickedIndex = null;
     }
   }
 
   function resetPictures(pictures) {
-    pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
-    currentPicture = 0;
-    pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.remove('hidden');
+    pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.add('hidden');
+
+    counter = 0;
+
+    pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.remove('hidden');
   }
 
   function togglePictures(pictures) {
 
-    if (pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION].length > 1) {
+    if (pictures[clickedIndex - INDEX_SYNCHRONIZATION].length > 1) {
 
-      if (currentPicture === pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION].length - 1) {
+      if (counter === pictures[clickedIndex - INDEX_SYNCHRONIZATION].length - 1) {
         resetPictures(pictures);
 
         return;
       }
 
-      pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
-      pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture + 1].classList.remove('hidden');
-      currentPicture++;
+      pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.add('hidden');
+
+      counter++;
+
+      pictures[clickedIndex - INDEX_SYNCHRONIZATION][counter].classList.remove('hidden');
     }
   }
 
