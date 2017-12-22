@@ -4,12 +4,14 @@
 window.showCard = (function () {
   var clickedButtonIndex;
   var currentPicture = 0;
-  var CARDS_INDEX_SYNCHRONIZATION = 1;
+  var INDEX_SYNCHRONIZATION = 1;
+  var ACTIVATED_PIN_CLASS = 'map__pin--active';
+  var PIN_CLASS = 'map__pin';
 
   function showTicket(evt, buttons, cards, photosLists, togglePicture, keydownListener) {
-    var target = (evt.target.classList.contains('map__pin')) ? evt.target : evt.target.parentNode;
+    var target = (evt.target.classList.contains(PIN_CLASS)) ? evt.target : evt.target.parentNode;
 
-    if (target.className !== 'map__pin') {
+    if (target.className !== PIN_CLASS) {
 
       return;
     }
@@ -18,11 +20,11 @@ window.showCard = (function () {
 
       if (target === buttons[i]) {
         clickedButtonIndex = i;
-        buttons[clickedButtonIndex].classList.add('map__pin--active');
-        cards[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].classList.remove('hidden');
+        buttons[clickedButtonIndex].classList.add(ACTIVATED_PIN_CLASS);
+        cards[clickedButtonIndex - INDEX_SYNCHRONIZATION].classList.remove('hidden');
 
-        if (photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].children.length !== 0) {
-          photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
+        if (photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
+          photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].addEventListener('click', togglePicture);
         }
       }
     }
@@ -33,12 +35,12 @@ window.showCard = (function () {
   function closeTicket(buttons, cards, photosLists, togglePicture, pictures, keydownListener) {
 
     if (clickedButtonIndex) {
-      cards[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].classList.add('hidden');
-      buttons[clickedButtonIndex].classList.remove('map__pin--active');
+      cards[clickedButtonIndex - INDEX_SYNCHRONIZATION].classList.add('hidden');
+      buttons[clickedButtonIndex].classList.remove(ACTIVATED_PIN_CLASS);
       document.removeEventListener('keydown', keydownListener);
 
-      if (photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].children.length !== 0) {
-        photosLists[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
+      if (photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].children.length !== 0) {
+        photosLists[clickedButtonIndex - INDEX_SYNCHRONIZATION].removeEventListener('click', togglePicture);
 
         resetPictures(pictures);
       }
@@ -48,23 +50,23 @@ window.showCard = (function () {
   }
 
   function resetPictures(pictures) {
-    pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
+    pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
     currentPicture = 0;
-    pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION][currentPicture].classList.remove('hidden');
+    pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.remove('hidden');
   }
 
   function togglePictures(pictures) {
 
-    if (pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].length > 1) {
+    if (pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION].length > 1) {
 
-      if (currentPicture === pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION].length - 1) {
+      if (currentPicture === pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION].length - 1) {
         resetPictures(pictures);
 
         return;
       }
 
-      pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
-      pictures[clickedButtonIndex - CARDS_INDEX_SYNCHRONIZATION][currentPicture + 1].classList.remove('hidden');
+      pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture].classList.add('hidden');
+      pictures[clickedButtonIndex - INDEX_SYNCHRONIZATION][currentPicture + 1].classList.remove('hidden');
       currentPicture++;
     }
   }

@@ -14,6 +14,8 @@ window.map = (function () {
   var userPin = map.querySelector('.map__pin--main');
   var mapPins;
   var address = document.querySelector('input[name="address"]');
+  var FADED_MAP_CLASS = 'map--faded';
+  var DISABLED_FORM_CLASS = 'notice__form--disabled';
   var MAP_WIDTH = 1200;
   var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
   var MIN_LOCATION_Y = 100 + USER_PIN_TOP_LOCATION_CORRECTION;
@@ -88,13 +90,13 @@ window.map = (function () {
   }
 
   function removeMapFading() {
-    map.classList.remove('map--faded');
+    map.classList.remove(FADED_MAP_CLASS);
   }
 
   function enableUserForm() {
     for (var i = 0; i < userFormDisabledParts.length; i++) {
-      userFormDisabledParts[i].removeAttribute('disabled');
-      userFormDisabledParts[i].classList.remove('notice__form--disabled');
+      userFormDisabledParts[i].disabled = false;
+      userFormDisabledParts[i].classList.remove(DISABLED_FORM_CLASS);
     }
   }
 
