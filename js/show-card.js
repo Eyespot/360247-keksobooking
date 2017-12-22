@@ -4,7 +4,7 @@
 window.showCard = (function () {
   var clickedIndex;
   var counter = 0;
-  var INDEX_SYNCHRONIZATION = 1;
+  var INDEX_SYNCHRONIZATION = window.util.indexSynchronization;
   var ACTIVATED_PIN_CLASS = 'map__pin--active';
   var PIN_CLASS = 'map__pin';
 

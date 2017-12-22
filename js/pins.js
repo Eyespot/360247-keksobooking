@@ -6,7 +6,7 @@ window.pins = (function () {
   var HALFWAY_PSEUDO_WIDTH = 5;
   var PSEUDO_HEIGHT = 18;
   var HALFWAY_MAP_PIN_HEIGHT = 22;
-  var INDEX_SYNCHRONIZATION = 1;
+  var INDEX_SYNCHRONIZATION = window.util.indexSynchronization;
   var HIDDEN_PIN_CLASS = 'map__pin hidden';
 
   function createMapPins(advertismentTickets, mapPinsContainer) {
