@@ -12,6 +12,9 @@ window.uploadedPictures = (function () {
   var userPicturesDropZone = document.querySelector('.form__photo-container .drop-zone');
   var userPicturesPreviewArea = document.querySelector('.form__photo-container');
 
+  userAvatarInput.name = 'avatar';
+
+  userPicturesInput.name = 'images';
   userPicturesInput.multiple = true;
   userPicturesPreviewArea.style.width = '240px';
 
