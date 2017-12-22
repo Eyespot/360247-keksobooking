@@ -2,15 +2,61 @@
 
 
 window.cards = (function () {
+
+  var GIVEN_FEATURES = [
+    'wifi',
+    'dishwasher',
+    'parking',
+    'washer',
+    'elevator',
+    'conditioner'
+  ];
+
+  function getTicketFeatures(stencil, card, featuresList, featuresListConteiner) {
+
+    GIVEN_FEATURES.forEach(function (feature, index) {
+
+      if (card.offer.features.indexOf(feature) === -1) {
+        featuresListConteiner.removeChild(featuresList[index]);
+      }
+    });
+  }
+
+  function addPhotos(stencil, card) {
+    var photosList = stencil.querySelector('.popup__pictures');
+    var photoContainer = photosList.querySelector('li');
+    var photo = photoContainer.querySelector('img');
+    var images;
+
+    photoContainer.style.display = 'flex';
+
+    photo.className = 'popup__picture';
+    photo.height = '105';
+    photo.style.cursor = 'pointer';
+    photo.style.margin = '0 auto';
+
+    if (card.offer.photos.length > 0) {
+      for (var i = 1; i < card.offer.photos.length; i++) {
+        photosList.appendChild(photoContainer.cloneNode(true));
+      }
+    }
+
+    images = photosList.querySelectorAll('.popup__picture');
+    card.offer.photos.forEach(function (image, index) {
+      images[index].src = image;
+    });
+
+    for (var j = 1; j < images.length; j++) {
+      images[j].classList.add('hidden');
+    }
+
+    if (card.offer.photos.length === 0) {
+      photosList.removeChild(photoContainer);
+    }
+  }
+
   function createCards(advertismentTickets, map) {
-    var GIVEN_FEATURES = [
-      'wifi',
-      'dishwasher',
-      'parking',
-      'washer',
-      'elevator',
-      'conditioner'
-    ];
+
     var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
     var fragment = document.createDocumentFragment();
     var type = {
@@ -20,57 +66,33 @@ window.cards = (function () {
     };
 
     advertismentTickets.forEach(function (card) {
-      var ticket = cardTemplate.cloneNode(true);
-      var featuresList = ticket.querySelectorAll('.feature');
-      var featuresListConteiner = ticket.querySelector('.popup__features');
-      var photosList = ticket.querySelector('.popup__pictures');
-      var photoContainer = photosList.querySelector('li');
-      var photo = photoContainer.querySelector('img');
+      var stencil = cardTemplate.cloneNode(true);
+      var featuresList = stencil.querySelectorAll('.feature');
+      var featuresListConteiner = stencil.querySelector('.popup__features');
+      var title = stencil.querySelector('h3');
+      var address = stencil.querySelector('small');
+      var price = stencil.querySelector('.popup__price');
+      var housingType = stencil.querySelector('h4');
+      var capacity = stencil.children[6];
+      var time = stencil.children[7];
+      var description = stencil.children[9];
+      var avatar = stencil.querySelector('.popup__avatar');
 
-      photoContainer.style.display = 'flex';
+      title.textContent = card.offer.title;
+      address.textContent = card.offer.address;
+      price.textContent = card.offer.price + ' \u20BD/ночь';
+      housingType.textContent = type[card.offer.type];
+      capacity.textContent = card.offer.rooms + ' комн. для ' + card.offer.guests + ' гостей';
+      time.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
+      description.textContent = card.offer.description;
+      avatar.src = card.author.avatar;
+      stencil.classList.add('hidden');
 
-      photo.className = 'popup__picture';
-      photo.height = '105';
-      photo.style.cursor = 'pointer';
-      photo.style.margin = '0 auto';
+      getTicketFeatures(stencil, card, featuresList, featuresListConteiner);
 
-      ticket.querySelector('h3').textContent = card.offer.title;
-      ticket.querySelector('small').textContent = card.offer.address;
-      ticket.querySelector('.popup__price').textContent = card.offer.price + ' \u20BD/ночь';
-      ticket.querySelector('h4').textContent = type[card.offer.type];
-      ticket.children[6].textContent = card.offer.rooms + ' комн. для ' + card.offer.guests + ' гостей';
-      ticket.children[7].textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
+      addPhotos(stencil, card);
 
-      GIVEN_FEATURES.forEach(function (feature, index) {
-        if (card.offer.features.indexOf(feature) === -1) {
-          featuresListConteiner.removeChild(featuresList[index]);
-        }
-      });
-
-      ticket.children[9].textContent = card.offer.description;
-      ticket.querySelector('.popup__avatar').src = card.author.avatar;
-      featuresListConteiner.parentNode.classList.add('hidden');
-
-      if (card.offer.photos.length > 0) {
-        for (var i = 1; i < card.offer.photos.length; i++) {
-          photosList.appendChild(photoContainer.cloneNode(true));
-        }
-      }
-
-      var images = photosList.querySelectorAll('.popup__picture');
-      card.offer.photos.forEach(function (image, index) {
-        images[index].src = image;
-      });
-
-      for (var j = 1; j < images.length; j++) {
-        images[j].classList.add('hidden');
-      }
-
-      if (card.offer.photos.length === 0) {
-        photosList.removeChild(photoContainer);
-      }
-
-      fragment.appendChild(ticket);
+      fragment.appendChild(stencil);
     });
 
     map.appendChild(fragment);

@@ -11,7 +11,8 @@ window.backend = (function () {
       401: 'Требуется авторизация.',
       404: 'Данные не найдены.',
       418: 'I\'m a teapot.',
-      500: 'Ошибка сервера.'
+      500: 'Ошибка сервера.',
+      other: 'Бинго! Неопределенная ошибка.'
     };
 
     xhr.responseType = 'json';
@@ -21,7 +22,7 @@ window.backend = (function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        onError(httpErrors[xhr.status]);
+        onError(httpErrors[xhr.status] || httpErrors['other']);
       }
 
     });
