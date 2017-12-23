@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.cards = (function () {
+(function () {
   var CARD_TEMPLATE = document.querySelector('template').content.querySelector('article.map__card');
 
   var GIVEN_FEATURES = [
@@ -100,13 +100,5 @@ window.cards = (function () {
     map.appendChild(fragment);
   }
 
-  return create;
+  window.cards = create;
 })();
-/*
-    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
-    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
-
-    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
-    В нем никак не регламентируется оформление экспорта.
-    Пример !== критерий.
-*/

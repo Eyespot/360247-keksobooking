@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.userForm = (function () {
+(function () {
   var USER_PIN_TOP_LOCATION_CORRECTION = window.util.USER_PIN_TOP_LOCATION_CORRECTION;
   var TIMES = ['12:00', '13:00', '14:00'];
   var TYPES = ['bugalo', 'flat', 'house', 'palace'];
@@ -112,13 +112,5 @@ window.userForm = (function () {
     }
   }
 
-  return userForm;
+  window.userForm = userForm;
 })();
-/*
-    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
-    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
-
-    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
-    В нем никак не регламентируется оформление экспорта.
-    Пример !== критерий.
-*/

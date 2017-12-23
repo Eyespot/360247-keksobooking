@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.map = (function () {
+(function () {
   var FADED_MAP_CLASS = 'map--faded';
   var DISABLED_FORM_CLASS = 'notice__form--disabled';
   var MAP_WIDTH = 1200;
@@ -223,20 +223,12 @@ window.map = (function () {
     clearMoveListeners();
   }
 
-  return {
-    getUserPinLocation: getUserPinLocation,
+  window.map = {
     address: address,
     userPin: userPin,
-    ticketsFiltersContainer: ticketsFiltersContainer,
+    photosLists: photosLists,
     filterTickets: filterTickets,
-    photosLists: photosLists
+    getUserPinLocation: getUserPinLocation,
+    ticketsFiltersContainer: ticketsFiltersContainer
   };
 })();
-/*
-    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
-    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
-
-    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
-    В нем никак не регламентируется оформление экспорта.
-    Пример !== критерий.
-*/

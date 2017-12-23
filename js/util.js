@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.util = (function () {
+(function () {
   var ESC_KEYCODE = 27;
   var INDEX_SYNCHRONIZATION_VALUE = 1;
   var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
@@ -66,22 +66,15 @@ window.util = (function () {
     return 'Не определен';
   }
 
-  return {
-    getRandomInteger: getRandomInteger,
-    isEscEvent: isEscEvent,
-    randomizeWithGivenSize: randomizeWithGivenSize,
-    getIndexesOfEqualElements: getIndexesOfEqualElements,
-    debounce: debounce,
-    checkBrowser: checkBrowser,
+  window.util = {
     INDEX_SYNCHRONIZATION_VALUE: INDEX_SYNCHRONIZATION_VALUE,
-    USER_PIN_TOP_LOCATION_CORRECTION: USER_PIN_TOP_LOCATION_CORRECTION
+    USER_PIN_TOP_LOCATION_CORRECTION: USER_PIN_TOP_LOCATION_CORRECTION,
+
+    debounce: debounce,
+    isEscEvent: isEscEvent,
+    checkBrowser: checkBrowser,
+    getRandomInteger: getRandomInteger,
+    randomizeWithGivenSize: randomizeWithGivenSize,
+    getIndexesOfEqualElements: getIndexesOfEqualElements
   };
 })();
-/*
-    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
-    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
-
-    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
-    В нем никак не регламентируется оформление экспорта.
-    Пример !== критерий.
-*/

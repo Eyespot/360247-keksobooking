@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.affectCard = (function () {
+(function () {
   var INDEX_SYNCHRONIZATION_VALUE = window.util.INDEX_SYNCHRONIZATION_VALUE;
   var ACTIVATED_PIN_CLASS = 'map__pin--active';
   var PIN_CLASS = 'map__pin';
@@ -87,17 +87,9 @@ window.affectCard = (function () {
     }
   }
 
-  return {
+  window.affectCard = {
     show: show,
     hide: hide,
     flip: flip
   };
 })();
-/*
-    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
-    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
-
-    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
-    В нем никак не регламентируется оформление экспорта.
-    Пример !== критерий.
-*/
