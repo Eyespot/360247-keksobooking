@@ -1,7 +1,24 @@
 'use strict';
 
 
-window.userForm = (function () {
+(function () {
+  var USER_PIN_TOP_LOCATION_CORRECTION = window.util.USER_PIN_TOP_LOCATION_CORRECTION;
+  var TIMES = ['12:00', '13:00', '14:00'];
+  var TYPES = ['bungalo', 'flat', 'house', 'palace'];
+  var PRICES = ['0', '1000', '5000', '10000'];
+  var ROOMS_QUANTITIES = ['1', '2', '3', '100'];
+  var TITLE_INPUT_MINLENGTH = 30;
+  var USER_PIN_START_LEFT = 50 + '%';
+  var USER_PIN_START_TOP = 375 + 'px';
+
+  var ROOMS_CAPACITY = {
+    '0': [true, true, false, true],
+    '1': [true, false, false, true],
+    '2': [false, false, false, true],
+    '3': [true, true, true, false]
+  };
+
+  var onChangeSynchronize = window.synchronizeFields;
   var userForm = document.querySelector('.notice__form');
   var userFormFields = userForm.querySelectorAll('.form__element');
   var roomsCapacitySelect = userFormFields[6].querySelector('select[name="capacity"]');
@@ -11,46 +28,34 @@ window.userForm = (function () {
   var housingPriceInput = userFormFields[3].querySelector('input[name="price"]');
   var housingTypeSelect = userFormFields[2].querySelector('select[name="type"]');
   var titleInput = userFormFields[0].querySelector('input[name="title"]');
-  var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;
-  var TIMES = ['12:00', '13:00', '14:00'];
-  var TYPES = ['bugalo', 'flat', 'house', 'palace'];
-  var PRICES = ['0', '1000', '5000', '10000'];
-  var ROOMS_QUANTITIES = ['1', '2', '3', '100'];
-  var ROOMS_CAPACITY = {
-    '0': [true, true, false, true],
-    '1': [true, false, false, true],
-    '2': [false, false, false, true],
-    '3': [true, true, true, false]
-  };
-  var onChangeSynchronize = window.synchronizeFields;
 
-  userForm.addEventListener('submit', function (evt) {
+  userForm.addEventListener('submit', function onUserFormSubmit(evt) {
     evt.preventDefault();
     window.backend.save(new FormData(userForm), onFormSendSuccess, onFormSendError);
   });
 
   if (window.util.checkBrowser() === 'Edge') {
-    titleInput.addEventListener('change', onEdgeTitleLengthCheck);
+    titleInput.addEventListener('change', onTitleInputChange);
   }
 
-  timeInSelect.addEventListener('change', function () {
+  timeInSelect.addEventListener('change', function onTimeInSelectChange() {
     onChangeSynchronize(timeInSelect, timeOutSelect, TIMES, TIMES, syncTimes);
   });
 
-  timeOutSelect.addEventListener('change', function () {
+  timeOutSelect.addEventListener('change', function onTimeOutSelectChange() {
     onChangeSynchronize(timeOutSelect, timeInSelect, TIMES, TIMES, syncTimes);
   });
 
-  housingTypeSelect.addEventListener('change', function () {
+  housingTypeSelect.addEventListener('change', function onHousingTypeSelectChange() {
     onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
   });
 
-  roomsQuantitySelect.addEventListener('change', function () {
+  roomsQuantitySelect.addEventListener('change', function onRoomsQuantitySelectChange() {
     onChangeSynchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
   });
 
-  function onEdgeTitleLengthCheck() {
-    if (titleInput.value.length < 30) {
+  function onTitleInputChange() {
+    if (titleInput.value.length < TITLE_INPUT_MINLENGTH) {
       var guideline = 'Пожалуйста, введите не менее 30 символов. Введено: ' + titleInput.value.length;
       titleInput.setCustomValidity(guideline);
     } else {
@@ -62,19 +67,19 @@ window.userForm = (function () {
     userForm.reset();
     window.map.ticketsFiltersContainer.reset();
     window.map.filterTickets();
-    window.map.userPin.style.top = 375 + 'px';
-    window.map.userPin.style.left = 50 + '%';
+    window.map.userPin.style.left = USER_PIN_START_LEFT;
+    window.map.userPin.style.top = USER_PIN_START_TOP;
 
     window.uploadedPictures();
 
     setAddressValue();
     onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
 
-    userForm.appendChild(window.statusMessages.successMessage());
+    userForm.appendChild(window.statusMessages.reflectSuccess());
   }
 
   function onFormSendError(error) {
-    document.querySelector('body').appendChild(window.statusMessages.errorMessage('Не удалось разместить объявление. ' + error));
+    document.querySelector('body').appendChild(window.statusMessages.reflectError('Не удалось разместить объявление. ' + error));
   }
 
   function setAddressValue() {
@@ -90,7 +95,7 @@ window.userForm = (function () {
     element.min = value;
 
     if (element.value) {
-      element.value = value;
+      element.value = null;
     }
   }
 
@@ -107,5 +112,5 @@ window.userForm = (function () {
     }
   }
 
-  return userForm;
+  window.userForm = userForm;
 })();

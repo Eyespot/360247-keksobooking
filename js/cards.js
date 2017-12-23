@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.cards = (function () {
+(function () {
 
   var GIVEN_FEATURES = [
     'wifi',
@@ -11,6 +11,14 @@ window.cards = (function () {
     'elevator',
     'conditioner'
   ];
+
+  var TYPE = {
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
+
+  var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
   function getTicketFeatures(stencil, card, featuresList, featuresListConteiner) {
 
@@ -55,15 +63,8 @@ window.cards = (function () {
     }
   }
 
-  function createCards(advertismentTickets, map) {
-
-    var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  function create(advertismentTickets, map) {
     var fragment = document.createDocumentFragment();
-    var type = {
-      'flat': 'Квартира',
-      'house': 'Дом',
-      'bungalo': 'Бунгало'
-    };
 
     advertismentTickets.forEach(function (card) {
       var stencil = cardTemplate.cloneNode(true);
@@ -83,7 +84,7 @@ window.cards = (function () {
       title.textContent = card.offer.title;
       address.textContent = card.offer.address;
       price.textContent = card.offer.price + ' \u20BD/ночь';
-      housingType.textContent = type[card.offer.type];
+      housingType.textContent = TYPE[card.offer.type];
       capacity.textContent = capacityContent;
       time.textContent = timeContent;
       description.textContent = card.offer.description;
@@ -100,5 +101,5 @@ window.cards = (function () {
     map.appendChild(fragment);
   }
 
-  return createCards;
+  window.cards = create;
 })();
