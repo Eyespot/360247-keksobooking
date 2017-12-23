@@ -1,8 +1,8 @@
 'use strict';
 
 
-window.showCard = (function () {
-  var INDEX_SYNCHRONIZATION_VALUE = window.util.indexSynchronizationValue;
+window.affectCard = (function () {
+  var INDEX_SYNCHRONIZATION_VALUE = window.util.INDEX_SYNCHRONIZATION_VALUE;
   var ACTIVATED_PIN_CLASS = 'map__pin--active';
   var PIN_CLASS = 'map__pin';
 
@@ -10,7 +10,7 @@ window.showCard = (function () {
   var synchronizedIndex;
   var counter = 0;
 
-  function showTicket(evt, buttons, cards, photosLists, togglePicture, keydownListener) {
+  function show(evt, buttons, cards, photosLists, onCardPictureClick, onKeyDown) {
     var target = (evt.target.classList.contains(PIN_CLASS)) ? evt.target : evt.target.parentNode;
 
     if (target.className !== PIN_CLASS) {
@@ -27,24 +27,24 @@ window.showCard = (function () {
         buttons[clickedIndex].classList.add(ACTIVATED_PIN_CLASS);
         cards[synchronizedIndex].classList.remove('hidden');
 
-        if (photosLists[synchronizedIndex].children.length > 0) {
-          photosLists[synchronizedIndex].addEventListener('click', togglePicture);
+        if (photosLists[synchronizedIndex].children.length > 1) {
+          photosLists[synchronizedIndex].addEventListener('click', onCardPictureClick);
         }
       }
     }
 
-    document.addEventListener('keydown', keydownListener);
+    document.addEventListener('keydown', onKeyDown);
   }
 
-  function closeTicket(buttons, cards, photosLists, togglePicture, pictures, keydownListener) {
+  function hide(buttons, cards, photosLists, onCardPictureClick, pictures, onKeyDown) {
 
     if (clickedIndex) {
       cards[synchronizedIndex].classList.add('hidden');
       buttons[clickedIndex].classList.remove(ACTIVATED_PIN_CLASS);
-      document.removeEventListener('keydown', keydownListener);
+      document.removeEventListener('keydown', onKeyDown);
 
-      if (photosLists[synchronizedIndex].children.length > 0) {
-        photosLists[synchronizedIndex].removeEventListener('click', togglePicture);
+      if (photosLists[synchronizedIndex].children.length > 1) {
+        photosLists[synchronizedIndex].removeEventListener('click', onCardPictureClick);
 
         resetPictures(pictures);
       }
@@ -73,7 +73,7 @@ window.showCard = (function () {
     showPicture(pictures);
   }
 
-  function togglePictures(pictures) {
+  function flip(pictures) {
 
     if (pictures[synchronizedIndex].length > 1) {
 
@@ -88,8 +88,8 @@ window.showCard = (function () {
   }
 
   return {
-    showTicket: showTicket,
-    closeTicket: closeTicket,
-    togglePictures: togglePictures
+    show: show,
+    hide: hide,
+    flip: flip
   };
 })();

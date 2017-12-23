@@ -9,7 +9,7 @@ window.statusMessages = (function () {
   var title = document.createElement('h2');
   var info = document.createElement('p');
 
-  closeButton.addEventListener('click', closeMessage);
+  closeButton.addEventListener('click', onMessageClose);
 
   message.appendChild(title);
   message.appendChild(info);
@@ -38,15 +38,15 @@ window.statusMessages = (function () {
   closeButton.style.opacity = '0.5';
 
   function onMessageEscPress(evt) {
-    window.util.isEscEvent(evt, closeMessage);
+    window.util.isEscEvent(evt, onMessageClose);
   }
 
-  function closeMessage() {
+  function onMessageClose() {
     document.removeEventListener('keydown', onMessageEscPress);
     message.parentNode.removeChild(message);
   }
 
-  function createErrorMessage(errorMessage) {
+  function reflectError(errorMessage) {
     message.style.top = '50%';
     message.style.borderColor = errorColor;
 
@@ -59,7 +59,7 @@ window.statusMessages = (function () {
     return message;
   }
 
-  function createSuccessMessage() {
+  function reflectSuccess() {
     message.style.top = '50%';
     message.style.borderColor = successColor;
 
@@ -73,7 +73,7 @@ window.statusMessages = (function () {
   }
 
   return {
-    errorMessage: createErrorMessage,
-    successMessage: createSuccessMessage
+    reflectError: reflectError,
+    reflectSuccess: reflectSuccess
   };
 })();

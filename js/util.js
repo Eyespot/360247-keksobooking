@@ -2,9 +2,11 @@
 
 
 window.util = (function () {
-  var previousTimeout = null;
   var ESC_KEYCODE = 27;
   var INDEX_SYNCHRONIZATION_VALUE = 1;
+  var USER_PIN_TOP_LOCATION_CORRECTION = 32 + 16;// button = 65 / 2, pseudo = 22 - 6(transform)
+
+  var previousTimeout = null;
 
   function getRandomInteger(min, max) {
     var random = min + Math.random() * (max + 1 - min);
@@ -71,6 +73,7 @@ window.util = (function () {
     getIndexesOfEqualElements: getIndexesOfEqualElements,
     debounce: debounce,
     checkBrowser: checkBrowser,
-    indexSynchronizationValue: INDEX_SYNCHRONIZATION_VALUE
+    INDEX_SYNCHRONIZATION_VALUE: INDEX_SYNCHRONIZATION_VALUE,
+    USER_PIN_TOP_LOCATION_CORRECTION: USER_PIN_TOP_LOCATION_CORRECTION
   };
 })();

@@ -6,10 +6,10 @@ window.pins = (function () {
   var HALFWAY_PSEUDO_WIDTH = 5;
   var PSEUDO_HEIGHT = 18;
   var HALFWAY_MAP_PIN_HEIGHT = 22;
-  var INDEX_SYNCHRONIZATION_VALUE = window.util.indexSynchronizationValue;
+  var INDEX_SYNCHRONIZATION_VALUE = window.util.INDEX_SYNCHRONIZATION_VALUE;
   var HIDDEN_PIN_CLASS = 'map__pin hidden';
 
-  function createMapPins(cards, container) {
+  function create(cards, container) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < cards.length; i++) {
@@ -29,7 +29,7 @@ window.pins = (function () {
     container.appendChild(fragment);
   }
 
-  function showMapPins(arrayOfIndexes, mapPins) {
+  function show(arrayOfIndexes, mapPins) {
 
     mapPins.forEach(function (mapPin, index) {
 
@@ -40,7 +40,7 @@ window.pins = (function () {
   }
 
   return {
-    createMapPins: createMapPins,
-    showMapPins: showMapPins
+    create: create,
+    show: show
   };
 })();

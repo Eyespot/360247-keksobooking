@@ -1,7 +1,7 @@
 'use strict';
 
 
-window.cardsFilters = (function () {
+window.filters = (function () {
   var LOW_PRICE = 10000;
   var MIDDLE_PRICE = 50000;
   var ANY_OPTION = 'any';
@@ -9,6 +9,8 @@ window.cardsFilters = (function () {
 
   var ticketFilters = Array.from(document.querySelectorAll('.map__filter'));
   var filterTypes = [filterWithType, filterWithPrice, filterWithRooms, filterWithGuests];
+  var filteredTickets = [];
+
   var priceWeight = {
     low: function (price) {
 
@@ -25,7 +27,6 @@ window.cardsFilters = (function () {
       return price >= MIDDLE_PRICE;
     }
   };
-  var filteredTickets = [];
 
   function filterWithType(tickets, value) {
     var filteredTicket = tickets.filter(function (ticket) {
@@ -81,7 +82,7 @@ window.cardsFilters = (function () {
     return outputArray;
   }
 
-  function filterTickets(advertismentTickets) {
+  function enforce(advertismentTickets) {
     var checkedPinFeatures = Array.from(document.querySelectorAll(CHECKED_FEATURE_SELECTOR));
     var checkedFeatures = getArrayFromElementsValue(checkedPinFeatures);
     var filters = getArrayFromElementsValue(ticketFilters);
@@ -102,5 +103,5 @@ window.cardsFilters = (function () {
     return filteredTickets;
   }
 
-  return filterTickets;
+  return enforce;
 })();

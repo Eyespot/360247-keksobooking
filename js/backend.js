@@ -3,39 +3,42 @@
 
 window.backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
+  var OK_STATUS = 200;
+  var HTTP_CONNECT_TIMEOUT = 2000;
+
+  var HTTP_ERRORS = {
+    400: 'Неверный запрос.',
+    401: 'Требуется авторизация.',
+    404: 'Данные не найдены.',
+    418: 'I\'m a teapot.',
+    500: 'Ошибка сервера.',
+    other: 'Бинго! Неопределенная ошибка.'
+  };
 
   function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    var httpErrors = {
-      400: 'Неверный запрос.',
-      401: 'Требуется авторизация.',
-      404: 'Данные не найдены.',
-      418: 'I\'m a teapot.',
-      500: 'Ошибка сервера.',
-      other: 'Бинго! Неопределенная ошибка.'
-    };
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
+    xhr.addEventListener('load', function onHttpRequestLoad() {
 
-      if (xhr.status === 200) {
+      if (xhr.status === OK_STATUS) {
         onLoad(xhr.response);
       } else {
-        onError(httpErrors[xhr.status] || httpErrors['other']);
+        onError(HTTP_ERRORS[xhr.status] || HTTP_ERRORS['other']);
       }
 
     });
 
-    xhr.addEventListener('error', function () {
+    xhr.addEventListener('error', function onHttpRequestError() {
       onError('Произошла ошибка соединения.');
     });
 
-    xhr.addEventListener('timeout', function () {
+    xhr.addEventListener('timeout', function onHttpRequestTimeout() {
       onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');
     });
 
-    xhr.timeout = 20000;
+    xhr.timeout = HTTP_CONNECT_TIMEOUT;
 
     return xhr;
   }
