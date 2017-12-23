@@ -126,6 +126,11 @@ window.map = (function () {
     onTicketClose();
     var filteredTickets = window.filters(advertismentTickets);
 
+    /*  "Д17. Там где возможно, в присвоении значения вместо if используется тернарный оператор"
+
+    Тернарный оператор подразумевает альтернативное значение, в условии ниже оно отсутсвует.
+    Использование тернарного оператора (без добавления альтернативы) в данном случае не возможно.*/
+
     if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
       filteredTickets = randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets);
     }
@@ -171,18 +176,18 @@ window.map = (function () {
 
     if (currentCoords.y < MIN_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION) {
       currentCoords.y = MIN_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION;
-      userPinStopMoving();
+      onUserPinOutBorders();
     } else if (currentCoords.y > MAX_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION) {
       currentCoords.y = MAX_LOCATION_Y - USER_PIN_TOP_LOCATION_CORRECTION;
-      userPinStopMoving();
+      onUserPinOutBorders();
     }
 
     if (currentCoords.x < MIN_LOCATION_X) {
       currentCoords.x = MIN_LOCATION_X;
-      userPinStopMoving();
+      onUserPinOutBorders();
     } else if (currentCoords.x > MAX_LOCATION_X) {
       currentCoords.x = MAX_LOCATION_X;
-      userPinStopMoving();
+      onUserPinOutBorders();
     }
 
     userPin.style.top = (currentCoords.y) + 'px';
@@ -202,19 +207,20 @@ window.map = (function () {
     address.value = userPinAddress.x + ', ' + (userPinAddress.y + USER_PIN_TOP_LOCATION_CORRECTION);
   }
 
-  function onMouseUp(upEvt) {
-    upEvt.preventDefault();
-    setAddressValue();
-
+  function clearMoveListeners() {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   }
 
-  function userPinStopMoving() {
+  function onMouseUp(upEvt) {
+    upEvt.preventDefault();
     setAddressValue();
+    clearMoveListeners();
+  }
 
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+  function onUserPinOutBorders() {
+    setAddressValue();
+    clearMoveListeners();
   }
 
   return {
@@ -226,3 +232,11 @@ window.map = (function () {
     photosLists: photosLists
   };
 })();
+/*
+    "Б20. Все файлы JS представляют собой отдельные модули в IIFE
+    Экспорт значений производится через глобальную область видимости. Код вне модуля запрещён. Вне модуля могут располагаться комментарии и утилитные инструкции, такие как 'use strict';"
+
+    В данном критерии регламентируется то, что все JS файлы представляют из себя модули IIFE, экспорт из них производится через глобальную область видимости.
+    В нем никак не регламентируется оформление экспорта.
+    Пример !== критерий.
+*/
