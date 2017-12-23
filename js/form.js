@@ -4,7 +4,7 @@
 (function () {
   var USER_PIN_TOP_LOCATION_CORRECTION = window.util.USER_PIN_TOP_LOCATION_CORRECTION;
   var TIMES = ['12:00', '13:00', '14:00'];
-  var TYPES = ['bugalo', 'flat', 'house', 'palace'];
+  var TYPES = ['bungalo', 'flat', 'house', 'palace'];
   var PRICES = ['0', '1000', '5000', '10000'];
   var ROOMS_QUANTITIES = ['1', '2', '3', '100'];
   var TITLE_INPUT_MINLENGTH = 30;
@@ -95,7 +95,7 @@
     element.min = value;
 
     if (element.value) {
-      element.value = value;
+      element.value = null;
     }
   }
 

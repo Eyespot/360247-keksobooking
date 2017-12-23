@@ -4,7 +4,7 @@
 (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
   var OK_STATUS = 200;
-  var HTTP_CONNECT_TIMEOUT = 20000;
+  var HTTP_CONNECTION_TIMEOUT = 20000;
 
   var HTTP_ERRORS = {
     400: 'Неверный запрос.',
@@ -38,7 +38,7 @@
       onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');
     });
 
-    xhr.timeout = HTTP_CONNECT_TIMEOUT;
+    xhr.timeout = HTTP_CONNECTION_TIMEOUT;
 
     return xhr;
   }

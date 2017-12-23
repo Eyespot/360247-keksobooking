@@ -2,9 +2,10 @@
 
 
 (function () {
+  var ERROR_COLOR = '#ff5635';
+  var SUCCESS_COLOR = '#10662a';
+
   var closeButton = document.querySelector('template').content.querySelector('button.popup__close').cloneNode(true);
-  var errorColor = '#ff5635';
-  var successColor = '#10662a';
   var message = document.createElement('div');
   var title = document.createElement('h2');
   var info = document.createElement('p');
@@ -48,9 +49,9 @@
 
   function reflectError(errorMessage) {
     message.style.top = '50%';
-    message.style.borderColor = errorColor;
+    message.style.borderColor = ERROR_COLOR;
 
-    title.style.color = errorColor;
+    title.style.color = ERROR_COLOR;
     title.textContent = 'Уууупс ¯\\_(ツ)_/¯';
 
     info.textContent = errorMessage;
@@ -61,9 +62,9 @@
 
   function reflectSuccess() {
     message.style.top = '50%';
-    message.style.borderColor = successColor;
+    message.style.borderColor = SUCCESS_COLOR;
 
-    title.style.color = successColor;
+    title.style.color = SUCCESS_COLOR;
     title.textContent = 'Готово!';
 
     info.textContent = 'Ваше объявление отправлено на модерацию';
