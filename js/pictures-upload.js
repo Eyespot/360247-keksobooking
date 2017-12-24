@@ -18,66 +18,85 @@
   userPicturesInput.multiple = true;
   userPicturesPreviewArea.style.width = '240px';
 
+  userAvatarInput.addEventListener('change', onUserAvatarInputChange);
 
-  userAvatarInput.addEventListener('change', function onUserAvatarInputChange() {
+  userPicturesInput.addEventListener('change', onPicturesInputChange);
+
+  userAvatarDropZone.addEventListener('dragenter', onUserAvatarDropZoneDragenter);
+
+  userAvatarDropZone.addEventListener('dragover', onUserAvatarDropZoneDragover);
+
+  userAvatarDropZone.addEventListener('drop', onUserAvatarDropZoneDrop);
+
+  userAvatarDropZone.addEventListener('dragleave', onUserAvatarDropZoneDragleave);
+
+  userPicturesDropZone.addEventListener('dragenter', onUserPicturesDropZoneDragenter);
+
+  userPicturesDropZone.addEventListener('dragover', onUserPicturesDropZoneDragover);
+
+  userPicturesDropZone.addEventListener('drop', onUserPicturesDropZoneDrop);
+
+  userPicturesDropZone.addEventListener('dragleave', onUserPicturesDropZoneDragleave);
+
+  function onUserAvatarInputChange() {
     displayAvatarPreview(userAvatarInput.files[0]);
-  });
+  }
 
-  userPicturesInput.addEventListener('change', function onPicturesInputChange() {
+  function onPicturesInputChange() {
     [].forEach.call(userPicturesInput.files, displayPicturesPreview);
-  });
+  }
 
-  userAvatarDropZone.addEventListener('dragenter', function onUserAvatarDropZoneDragenter(evt) {
+  function onUserAvatarDropZoneDragenter(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.target.style.backgroundColor = 'lightgreen';
-  });
+  }
 
-  userAvatarDropZone.addEventListener('dragover', function onUserAvatarDropZoneDragover(evt) {
+  function onUserAvatarDropZoneDragover(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     return false;
-  });
+  }
 
-  userAvatarDropZone.addEventListener('drop', function onUserAvatarDropZoneDrop(evt) {
+  function onUserAvatarDropZoneDrop(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.dataTransfer.dropEffect = 'copy';
     displayAvatarPreview(evt.dataTransfer.files[0]);
     evt.target.style.backgroundColor = '';
-  });
+  }
 
-  userAvatarDropZone.addEventListener('dragleave', function onUserAvatarDropZoneDragleave(evt) {
+  function onUserAvatarDropZoneDragleave(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.target.style.backgroundColor = '';
-  });
+  }
 
-  userPicturesDropZone.addEventListener('dragenter', function onUserPicturesDropZoneDragenter(evt) {
+  function onUserPicturesDropZoneDragenter(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.target.style.backgroundColor = 'lightgreen';
-  });
+  }
 
-  userPicturesDropZone.addEventListener('dragover', function onUserPicturesDropZoneDragover(evt) {
+  function onUserPicturesDropZoneDragover(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     return false;
-  });
+  }
 
-  userPicturesDropZone.addEventListener('drop', function onUserPicturesDropZoneDrop(evt) {
+  function onUserPicturesDropZoneDrop(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.dataTransfer.dropEffect = 'copy';
     [].forEach.call(evt.dataTransfer.files, displayPicturesPreview);
     evt.target.style.backgroundColor = '';
-  });
+  }
 
-  userPicturesDropZone.addEventListener('dragleave', function onUserPicturesDropZoneDragleave(evt) {
+  function onUserPicturesDropZoneDragleave(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.target.style.backgroundColor = '';
-  });
+  }
 
   function displayAvatarPreview(photo) {
     var file = photo;

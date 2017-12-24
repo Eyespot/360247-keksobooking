@@ -100,9 +100,9 @@
       Тернарный оператор подразумевает альтернативное значение, в условии ниже оно отсутсвует.
       Использование тернарного оператора (без добавления альтернативы) в данном случае не возможно.*/
 
-      if (filter !== ANY_OPTION) {
-        filteredTickets = filterTypes[i](filteredTickets, filter);
-      }
+      // if (filter !== ANY_OPTION) {
+      filteredTickets = (filter !== ANY_OPTION) ? filterTypes[i](filteredTickets, filter) : filteredTickets;
+      // }
     });
 
     return filteredTickets;

@@ -33,14 +33,16 @@
 
   userPin.addEventListener('mousedown', onUserPinMouseDown);
 
-  ticketsFiltersContainer.addEventListener('change', function onFilterChange() {
-    window.util.debounce(filterTickets, DELAY_TIME);
-  });
+  ticketsFiltersContainer.addEventListener('change', onFilterChange);
 
   window.backend.load(onDataLoad, onDataLoadError);
 
   function onCardPictureClick() {
     window.affectCard.flip(pictures);
+  }
+
+  function onFilterChange() {
+    window.util.debounce(filterTickets, DELAY_TIME);
   }
 
   function onDataLoadError(errorMessage) {
@@ -131,9 +133,9 @@
     Тернарный оператор подразумевает альтернативное значение, в условии ниже оно отсутсвует.
     Использование тернарного оператора (без добавления альтернативы) в данном случае не возможно.*/
 
-    if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
-      filteredTickets = randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets);
-    }
+    // if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
+    filteredTickets = (filteredTickets.length > SHOWN_TICKETS_QUANTITY) ? randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets) : filteredTickets;
+    // }
 
     var filteredTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, filteredTickets);
 
