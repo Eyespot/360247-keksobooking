@@ -18,7 +18,7 @@
     'bungalo': 'Бунгало'
   };
 
-  var cardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  var CARD_TEMPLATE = document.querySelector('template').content.querySelector('article.map__card');
 
   function getTicketFeatures(stencil, card, featuresList, featuresListConteiner) {
 
@@ -67,7 +67,7 @@
     var fragment = document.createDocumentFragment();
 
     advertismentTickets.forEach(function (card) {
-      var stencil = cardTemplate.cloneNode(true);
+      var stencil = CARD_TEMPLATE.cloneNode(true);
       var featuresList = stencil.querySelectorAll('.feature');
       var featuresListConteiner = stencil.querySelector('.popup__features');
       var title = stencil.querySelector('h3');
