@@ -128,14 +128,9 @@
     onTicketClose();
     var filteredTickets = window.filters(advertismentTickets);
 
-    /*  "Д17. Там где возможно, в присвоении значения вместо if используется тернарный оператор"
-
-    Тернарный оператор подразумевает альтернативное значение, в условии ниже оно отсутсвует.
-    Использование тернарного оператора (без добавления альтернативы) в данном случае не возможно.*/
-
-    // if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
-    filteredTickets = (filteredTickets.length > SHOWN_TICKETS_QUANTITY) ? randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets) : filteredTickets;
-    // }
+    if (filteredTickets.length > SHOWN_TICKETS_QUANTITY) {
+      filteredTickets = randomizeWithGivenSize(SHOWN_TICKETS_QUANTITY, filteredTickets);
+    }
 
     var filteredTicketsIndexes = getIndexesOfEqualElements(advertismentTickets, filteredTickets);
 

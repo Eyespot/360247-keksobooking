@@ -12,6 +12,8 @@
   var userPicturesDropZone = document.querySelector('.form__photo-container .drop-zone');
   var userPicturesPreviewArea = document.querySelector('.form__photo-container');
 
+  var reset = document.querySelector('button[class="form__reset"]');
+
   userAvatarInput.name = 'avatar';
 
   userPicturesInput.name = 'images';
@@ -37,6 +39,8 @@
   userPicturesDropZone.addEventListener('drop', onUserPicturesDropZoneDrop);
 
   userPicturesDropZone.addEventListener('dragleave', onUserPicturesDropZoneDragleave);
+
+  reset.addEventListener('click', onResetClick);
 
   function onUserAvatarInputChange() {
     displayAvatarPreview(userAvatarInput.files[0]);
@@ -98,6 +102,12 @@
     evt.target.style.backgroundColor = '';
   }
 
+  function onAvatarLoad(reader) {
+    userAvatarPreview.src = reader.result;
+    userAvatarPreview.height = '66';
+    userAvatarPreview.width = '60';
+  }
+
   function displayAvatarPreview(photo) {
     var file = photo;
     var fileName = file.name.toLowerCase();
@@ -109,14 +119,18 @@
 
     if (matches) {
       var reader = new FileReader();
+      var context = reader;
 
-      reader.addEventListener('load', function onAvatarLoad() {
-        userAvatarPreview.src = reader.result;
-        userAvatarPreview.height = '66';
-        userAvatarPreview.width = '60';
-      });
+      reader.addEventListener('load', onAvatarLoad.bind(context, reader));
       reader.readAsDataURL(file);
     }
+  }
+
+  function onPicturesLoad(reader) {
+    var image = document.createElement('IMG');
+    image.width = '80';
+    userPicturesPreviewArea.appendChild(image);
+    image.src = reader.result;
   }
 
   function displayPicturesPreview(photo) {
@@ -130,13 +144,9 @@
 
     if (matches) {
       var reader = new FileReader();
+      var context = reader;
 
-      reader.addEventListener('load', function onPicturesLoad() {
-        var image = document.createElement('IMG');
-        image.width = '80';
-        userPicturesPreviewArea.appendChild(image);
-        image.src = reader.result;
-      });
+      reader.addEventListener('load', onPicturesLoad.bind(context, reader));
       reader.readAsDataURL(file);
     }
   }
@@ -149,6 +159,10 @@
     while (userPicturesPreviewArea.children.length > 1) {
       userPicturesPreviewArea.removeChild(userPicturesPreviewArea.lastChild);
     }
+  }
+
+  function onResetClick() {
+    resetPreviews();
   }
 
   window.uploadedPictures = resetPreviews;

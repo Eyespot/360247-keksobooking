@@ -95,14 +95,9 @@
 
     filters.forEach(function (filter, i) {
 
-      /*  "Д17. Там где возможно, в присвоении значения вместо if используется тернарный оператор"
-
-      Тернарный оператор подразумевает альтернативное значение, в условии ниже оно отсутсвует.
-      Использование тернарного оператора (без добавления альтернативы) в данном случае не возможно.*/
-
-      // if (filter !== ANY_OPTION) {
-      filteredTickets = (filter !== ANY_OPTION) ? filterTypes[i](filteredTickets, filter) : filteredTickets;
-      // }
+      if (filter !== ANY_OPTION) {
+        filteredTickets = filterTypes[i](filteredTickets, filter);
+      }
     });
 
     return filteredTickets;
