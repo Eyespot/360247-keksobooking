@@ -119,7 +119,7 @@
 
     if (matches) {
       var reader = new FileReader();
-      var context = reader;
+      var context;
 
       reader.addEventListener('load', onAvatarLoad.bind(context, reader));
       reader.readAsDataURL(file);
@@ -144,7 +144,7 @@
 
     if (matches) {
       var reader = new FileReader();
-      var context = reader;
+      var context;
 
       reader.addEventListener('load', onPicturesLoad.bind(context, reader));
       reader.readAsDataURL(file);

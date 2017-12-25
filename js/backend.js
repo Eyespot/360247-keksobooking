@@ -35,7 +35,7 @@
 
   function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    var context = [onLoad, onError, xhr];
+    var context;
 
     xhr.responseType = 'json';
 
