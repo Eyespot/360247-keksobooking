@@ -28,6 +28,7 @@
   var housingPriceInput = userFormFields[3].querySelector('input[name="price"]');
   var housingTypeSelect = userFormFields[2].querySelector('select[name="type"]');
   var titleInput = userFormFields[0].querySelector('input[name="title"]');
+  var reset = userForm.querySelector('button[class="form__reset"]');
 
   userForm.addEventListener('submit', onUserFormSubmit);
 
@@ -43,6 +44,8 @@
 
   roomsQuantitySelect.addEventListener('change', onRoomsQuantitySelectChange);
 
+  reset.addEventListener('click', onResetClick);
+
   function onTitleInputChange() {
     if (titleInput.value.length < TITLE_INPUT_MINLENGTH) {
       var guideline = 'Пожалуйста, введите не менее 30 символов. Введено: ' + titleInput.value.length;
@@ -54,6 +57,18 @@
 
   function onFormSendSuccess() {
     userForm.reset();
+    resetUserFormValues();
+
+    userForm.appendChild(window.statusMessages.reflectSuccess());
+  }
+
+  function onResetClick(evt) {
+    evt.preventDefault();
+    userForm.reset();
+    resetUserFormValues();
+  }
+
+  function resetUserFormValues() {
     window.map.ticketsFiltersContainer.reset();
     window.map.filterTickets();
     window.map.userPin.style.left = USER_PIN_START_LEFT;
@@ -61,10 +76,11 @@
 
     window.uploadedPictures();
 
-    setAddressValue();
     onChangeSynchronize(housingTypeSelect, housingPriceInput, TYPES, PRICES, syncHousingTypeWithMinPrice);
 
-    userForm.appendChild(window.statusMessages.reflectSuccess());
+    onChangeSynchronize(roomsQuantitySelect, roomsCapacitySelect, ROOMS_QUANTITIES, ROOMS_CAPACITY, syncRoomsQuantityWithRoomsCapacity);
+
+    setAddressValue();
   }
 
   function onFormSendError(error) {

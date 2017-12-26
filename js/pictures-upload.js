@@ -12,8 +12,6 @@
   var userPicturesDropZone = document.querySelector('.form__photo-container .drop-zone');
   var userPicturesPreviewArea = document.querySelector('.form__photo-container');
 
-  var reset = document.querySelector('button[class="form__reset"]');
-
   userAvatarInput.name = 'avatar';
 
   userPicturesInput.name = 'images';
@@ -39,8 +37,6 @@
   userPicturesDropZone.addEventListener('drop', onUserPicturesDropZoneDrop);
 
   userPicturesDropZone.addEventListener('dragleave', onUserPicturesDropZoneDragleave);
-
-  reset.addEventListener('click', onResetClick);
 
   function onUserAvatarInputChange() {
     displayAvatarPreview(userAvatarInput.files[0]);
@@ -157,10 +153,6 @@
     while (userPicturesPreviewArea.children.length > 1) {
       userPicturesPreviewArea.removeChild(userPicturesPreviewArea.lastChild);
     }
-  }
-
-  function onResetClick() {
-    resetPreviews();
   }
 
   window.uploadedPictures = resetPreviews;
