@@ -15,28 +15,34 @@
     other: 'Бинго! Неопределенная ошибка.'
   };
 
+  function onHttpRequestLoad(onLoad, onError, xhr) {
+
+    if (xhr.status === OK_STATUS) {
+      onLoad(xhr.response);
+    } else {
+      onError(HTTP_ERRORS[xhr.status] || HTTP_ERRORS['other']);
+    }
+
+  }
+
+  function onHttpRequestError(onError) {
+    onError('Произошла ошибка соединения.');
+  }
+
+  function onHttpRequestTimeout(onError) {
+    onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');
+  }
+
   function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function onHttpRequestLoad() {
+    xhr.addEventListener('load', onHttpRequestLoad.bind(xhr, onLoad, onError, xhr));
 
-      if (xhr.status === OK_STATUS) {
-        onLoad(xhr.response);
-      } else {
-        onError(HTTP_ERRORS[xhr.status] || HTTP_ERRORS['other']);
-      }
+    xhr.addEventListener('error', onHttpRequestError.bind(xhr, onError));
 
-    });
-
-    xhr.addEventListener('error', function onHttpRequestError() {
-      onError('Произошла ошибка соединения.');
-    });
-
-    xhr.addEventListener('timeout', function onHttpRequestTimeout() {
-      onError('Превышено время ожидания ответа. Проверьте интеренет соединение.');
-    });
+    xhr.addEventListener('timeout', onHttpRequestTimeout.bind(xhr, onError));
 
     xhr.timeout = HTTP_CONNECTION_TIMEOUT;
 
