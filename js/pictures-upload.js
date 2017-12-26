@@ -119,9 +119,8 @@
 
     if (matches) {
       var reader = new FileReader();
-      var context;
 
-      reader.addEventListener('load', onAvatarLoad.bind(context, reader));
+      reader.addEventListener('load', onAvatarLoad.bind(reader, reader));
       reader.readAsDataURL(file);
     }
   }
@@ -144,9 +143,8 @@
 
     if (matches) {
       var reader = new FileReader();
-      var context;
 
-      reader.addEventListener('load', onPicturesLoad.bind(context, reader));
+      reader.addEventListener('load', onPicturesLoad.bind(reader, reader));
       reader.readAsDataURL(file);
     }
   }

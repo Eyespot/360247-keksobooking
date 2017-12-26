@@ -35,15 +35,14 @@
 
   function request(onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    var context;
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', onHttpRequestLoad.bind(context, onLoad, onError, xhr));
+    xhr.addEventListener('load', onHttpRequestLoad.bind(xhr, onLoad, onError, xhr));
 
-    xhr.addEventListener('error', onHttpRequestError.bind(context, onError));
+    xhr.addEventListener('error', onHttpRequestError.bind(xhr, onError));
 
-    xhr.addEventListener('timeout', onHttpRequestTimeout.bind(context, onError));
+    xhr.addEventListener('timeout', onHttpRequestTimeout.bind(xhr, onError));
 
     xhr.timeout = HTTP_CONNECTION_TIMEOUT;
 
